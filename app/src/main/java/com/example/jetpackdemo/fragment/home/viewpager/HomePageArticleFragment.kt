@@ -223,13 +223,11 @@ class HomePageArticleFragment() : Fragment() {
                     when (it) {
                         is CollectAction.Success -> {
                             Log.d(TAG,"CollectAction.Success")
-                            // 使用 refresh 局部更新时 会造成 显示 swipeLayout 并且列表自动向上滑动
-                            Log.d(TAG,"it.position = ${it.position}")
-                            articleAdapter.notifyItemChanged(it.position,true)
+                            articleAdapter.refresh()
 
                         }
                         is CollectAction.Error -> {
-                            articleAdapter.notifyItemChanged(it.position,false)
+                            articleAdapter.refresh()
                         }
                         else -> {}
                     }
@@ -244,11 +242,10 @@ class HomePageArticleFragment() : Fragment() {
                     when (it) {
                         is UnCollectAction.Success -> {
                             Log.d(TAG,"UnCollectAction.Success it.position = ${it.position}")
-                            articleAdapter.notifyItemChanged(it.position,false)
+                            articleAdapter.refresh()
                         }
                         is UnCollectAction.Error -> {
-                            articleAdapter.notifyItemChanged(it.position,true)
-
+                            articleAdapter.refresh()
                         }
 
                     }

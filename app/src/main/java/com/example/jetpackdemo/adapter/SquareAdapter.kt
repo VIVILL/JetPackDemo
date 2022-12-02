@@ -1,5 +1,6 @@
 package com.example.jetpackdemo.adapter
 
+import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -95,9 +96,9 @@ class SquareAdapter: PagingDataAdapter<Article, SquareAdapter.SquareViewHolder>(
             onBindViewHolder(holder, position);
         } else {
             // payloads不为空，这只更新需要更新的View即可。
-            val payload: Boolean = payloads[0] as Boolean
+            val payload: Bundle = payloads[0] as Bundle
             Log.d(TAG,"payload = $payload")
-            holder.updateImageView(payload)
+            holder.updateImageView(payload.getBoolean("collect"))
 
         }
     }
@@ -133,6 +134,17 @@ class SquareAdapter: PagingDataAdapter<Article, SquareAdapter.SquareViewHolder>(
             override fun areContentsTheSame(oldItem: Article, newItem: Article): Boolean {
                 Log.d(TAG, " newItem = ${newItem.collect}" + " return ${oldItem == newItem}")
                 return oldItem == newItem
+            }
+
+            //局部刷新
+            override fun getChangePayload(oldItem: Article, newItem: Article): Any? {
+                val bundle = Bundle()
+                Log.d(TAG,"inner getChangePayload collect =  ${oldItem.collect} " +
+                        "collect = ${newItem.collect} ")
+                if (oldItem.collect != newItem.collect){
+                    bundle.putBoolean("collect",newItem.collect)
+                }
+                return bundle
             }
         }
     }

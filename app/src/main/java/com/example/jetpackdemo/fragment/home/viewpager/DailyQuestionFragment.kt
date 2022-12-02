@@ -139,11 +139,10 @@ class DailyQuestionFragment : Fragment() {
                     when (it) {
                         is CollectAction.Success -> {
                             Log.d(TAG,"CollectAction.Success")
-                            // 使用 refresh 局部更新时 会造成 显示 swipeLayout 并且列表自动向上滑动
-                            dailyQuestionAdapter.notifyItemChanged(it.position,true)
+                            dailyQuestionAdapter.refresh()
                         }
                         is CollectAction.Error -> {
-
+                            dailyQuestionAdapter.refresh()
                         }
 
                     }
@@ -158,10 +157,10 @@ class DailyQuestionFragment : Fragment() {
                     when (it) {
                         is UnCollectAction.Success -> {
                             Log.d(TAG,"UnCollectAction.Success")
-                            dailyQuestionAdapter.notifyItemChanged(it.position,false)
+                            dailyQuestionAdapter.refresh()
                         }
                         is UnCollectAction.Error -> {
-
+                            dailyQuestionAdapter.refresh()
                         }
 
                     }

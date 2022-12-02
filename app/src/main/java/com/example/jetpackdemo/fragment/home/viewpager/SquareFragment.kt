@@ -138,13 +138,11 @@ class SquareFragment : Fragment() {
                     when (it) {
                         is CollectAction.Success -> {
                             Log.d(TAG,"CollectAction.Success")
-                           // squareAdapter.refresh()
-                            // 使用 refresh 局部更新时 会造成 显示 swipeLayout 并且列表自动向上滑动
-                            Log.d(TAG,"it.position = ${it.position}")
-                            squareAdapter.notifyItemChanged(it.position,true)
+                            // 局部刷新
+                            squareAdapter.refresh()
                         }
                         is CollectAction.Error -> {
-
+                            squareAdapter.refresh()
                         }
 
                     }
@@ -159,10 +157,10 @@ class SquareFragment : Fragment() {
                     when (it) {
                         is UnCollectAction.Success -> {
                             Log.d(TAG,"UnCollectAction.Success")
-                            squareAdapter.notifyItemChanged(it.position,false)
+                            squareAdapter.refresh()
                         }
                         is UnCollectAction.Error -> {
-
+                            squareAdapter.refresh()
                         }
 
                     }

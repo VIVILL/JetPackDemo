@@ -114,9 +114,9 @@ class HomePageArticleAdapter: PagingDataAdapter<Article, HomePageArticleAdapter.
             onBindViewHolder(holder, position);
         } else {
             // payloads不为空，这只更新需要更新的View即可。
-            val payload: Boolean = payloads[0] as Boolean
+            val payload: Bundle  = payloads[0] as Bundle
             Log.d(TAG,"payload = $payload")
-            holder.updateImageView(payload)
+            holder.updateImageView(payload.getBoolean("collect"))
 
         }
     }
@@ -153,21 +153,17 @@ class HomePageArticleAdapter: PagingDataAdapter<Article, HomePageArticleAdapter.
                 return oldItem == newItem
             }
 
-            /* override fun getChangePayload(oldItem: Article, newItem: Article): Any? {
-                 return super.getChangePayload(oldItem, newItem)
-             }*/
-
-            //  局部刷新  返回null 整条数据刷新
-            /*  override fun getChangePayload(oldItem: Article, newItem: Article): Any? {
-                  //var bundle = Bundle()
-                  // onBindViewHolder  实现三个参数  payloads   第一个数据为  封装的bundle
-                  Log.d(TAG,"inner getChangePayload collect =  ${oldItem.collect} " +
-                          "collect = ${newItem.collect} ")
-                  *//*if (oldItem.collect != newItem.collect){
+            //局部刷新
+            override fun getChangePayload(oldItem: Article, newItem: Article): Any? {
+                val bundle = Bundle()
+                // onBindViewHolder  实现三个参数  payloads   第一个数据为  封装的bundle
+                Log.d(TAG,"inner getChangePayload collect =  ${oldItem.collect} " +
+                        "collect = ${newItem.collect} ")
+                if (oldItem.collect != newItem.collect){
                     bundle.putBoolean("collect",newItem.collect)
-                }*//*
-                return newItem.collect
-            }*/
+                }
+                return bundle
+            }
         }
     }
 
