@@ -110,13 +110,13 @@ class HomePageArticleFragment() : Fragment() {
             //跳转到带参数的 fragment
             navController.navigate(R.id.webFragment,bundle)
         }
-        articleAdapter.setImageViewClickListener { id,collect,position->
+        articleAdapter.setImageViewClickListener { id,collect->
             // 如果是已收藏状态 就取消收藏 如果是未收藏状态则 收藏
-            Log.d(TAG,"inner setImageViewClickListener collect = $collect position = $position")
+            Log.d(TAG,"inner setImageViewClickListener collect = $collect")
             if (collect){
-                viewModel.unCollect(id,position)
+                viewModel.unCollect(id)
             }else {
-                viewModel.collect(id,position)
+                viewModel.collect(id)
             }
         }
 
@@ -241,7 +241,7 @@ class HomePageArticleFragment() : Fragment() {
                 viewModel.unCollectAction.collect {
                     when (it) {
                         is UnCollectAction.Success -> {
-                            Log.d(TAG,"UnCollectAction.Success it.position = ${it.position}")
+                            Log.d(TAG,"UnCollectAction.Success")
                             articleAdapter.refresh()
                         }
                         is UnCollectAction.Error -> {

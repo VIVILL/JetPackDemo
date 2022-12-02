@@ -49,7 +49,7 @@ class SquareAdapter: PagingDataAdapter<Article, SquareAdapter.SquareViewHolder>(
             }
         }
 
-        fun bindImageViewClick(article: Article,onImageViewClick: (id: Int,collect: Boolean,position: Int) -> Unit) {
+        fun bindImageViewClick(article: Article,onImageViewClick: (id: Int,collect: Boolean) -> Unit) {
             //设置 favoriteImageView 监听
             binding.favoriteImageView.setOnClickListener{
                 Log.d(TAG, "inner OnClick Article.id = ${article.id} " +
@@ -59,7 +59,7 @@ class SquareAdapter: PagingDataAdapter<Article, SquareAdapter.SquareViewHolder>(
                 )
                 // 将 id 和 collect 回传 用于调用 api
                 // onImageViewClick(article.id, article.collect, absoluteAdapterPosition)
-                onImageViewClick(article.id, collect, absoluteAdapterPosition)
+                onImageViewClick(article.id, collect)
 
             }
         }
@@ -82,8 +82,8 @@ class SquareAdapter: PagingDataAdapter<Article, SquareAdapter.SquareViewHolder>(
         this.onClick = onClick
     }
 
-    private lateinit var onImageViewClick: (id: Int,collect: Boolean,position: Int) -> Unit
-    fun setImageViewClickListener(onImageViewClick: (id: Int,collect: Boolean,position: Int) -> Unit){
+    private lateinit var onImageViewClick: (id: Int,collect: Boolean) -> Unit
+    fun setImageViewClickListener(onImageViewClick: (id: Int,collect: Boolean) -> Unit){
         this.onImageViewClick = onImageViewClick
     }
 

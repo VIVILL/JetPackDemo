@@ -74,13 +74,13 @@ class DailyQuestionFragment : Fragment() {
             //跳转到带参数的 fragment
             navController.navigate(R.id.webFragment,bundle)
         }
-        dailyQuestionAdapter.setImageViewClickListener{ id,collect ,position->
+        dailyQuestionAdapter.setImageViewClickListener{ id,collect->
             // 如果是已收藏状态 就取消收藏 如果是未收藏状态则 收藏
-            Log.d(TAG,"collect = $collect position = $position")
+            Log.d(TAG,"collect = $collect")
             if (collect){
-                viewModel.unCollect(id,position)
+                viewModel.unCollect(id)
             }else {
-                viewModel.collect(id,position)
+                viewModel.collect(id)
             }
         }
         // 为RecyclerView配置adapter

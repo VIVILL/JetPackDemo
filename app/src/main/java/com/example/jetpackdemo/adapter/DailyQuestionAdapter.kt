@@ -50,7 +50,7 @@ class DailyQuestionAdapter: PagingDataAdapter<Article, DailyQuestionAdapter.Dail
 
         fun bindImageViewClick(
             article: Article,
-            onImageViewClick: (id: Int, collect: Boolean, position: Int) -> Unit
+            onImageViewClick: (id: Int, collect: Boolean) -> Unit
         ) {
             Log.d(TAG, "inner bindImageViewClick")
             //设置 favoriteImageView 监听
@@ -63,7 +63,7 @@ class DailyQuestionAdapter: PagingDataAdapter<Article, DailyQuestionAdapter.Dail
                 )
                 // 将 id 和 collect 回传 用于调用 api
                // onImageViewClick(article.id, article.collect, absoluteAdapterPosition)
-                onImageViewClick(article.id, collect, absoluteAdapterPosition)
+                onImageViewClick(article.id, collect)
             }
         }
 
@@ -84,8 +84,8 @@ class DailyQuestionAdapter: PagingDataAdapter<Article, DailyQuestionAdapter.Dail
         this.onClick = onClick
     }
 
-    private lateinit var onImageViewClick: (id: Int, collect: Boolean, position: Int) -> Unit
-    fun setImageViewClickListener(onImageViewClick: (id: Int, collect: Boolean, position: Int) -> Unit) {
+    private lateinit var onImageViewClick: (id: Int, collect: Boolean ) -> Unit
+    fun setImageViewClickListener(onImageViewClick: (id: Int, collect: Boolean) -> Unit) {
         this.onImageViewClick = onImageViewClick
     }
 

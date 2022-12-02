@@ -39,15 +39,15 @@ class CollectionAdapter: PagingDataAdapter<Collect, CollectionAdapter.ArticleVie
             }
         }
 
-        fun bindImageViewClick(collect: Collect,onImageViewClick: (id: Int,originId: Int,position: Int) -> Unit) {
+        fun bindImageViewClick(collect: Collect,onImageViewClick: (id: Int,originId: Int) -> Unit) {
             //设置 favoriteImageView 监听
             binding.favoriteImageView.setOnClickListener{
-                // 将 id 和 collect 回传 用于调用 api
-                onImageViewClick(collect.id,collect.originId,absoluteAdapterPosition)
-                Log.d(TAG,"inner OnClick Article.id = ${collect.id} absoluteAdapterPosition = $absoluteAdapterPosition")
+                // 将 id 和 originId 回传 用于调用 api
+                onImageViewClick(collect.id,collect.originId)
+                Log.d(TAG,"inner OnClick Article.id = ${collect.id}")
                 // 设置后立即更新 UI 防止无网络的情况下 点击后无反应
-                Log.d(TAG,"inner OnClick before setImage ic_favorite")
-                binding.favoriteImageView.setImageResource(R.drawable.ic_favorite)
+              /*  Log.d(TAG,"inner OnClick before setImage ic_favorite")
+                binding.favoriteImageView.setImageResource(R.drawable.ic_favorite)*/
 
             }
         }
@@ -78,8 +78,8 @@ class CollectionAdapter: PagingDataAdapter<Collect, CollectionAdapter.ArticleVie
         this.onClick = onClick
     }
 
-    private lateinit var onImageViewClick: (id: Int,originId: Int,position: Int) -> Unit
-    fun setImageViewClickListener(onImageViewClick: (id: Int,originId: Int,position: Int) -> Unit){
+    private lateinit var onImageViewClick: (id: Int,originId: Int) -> Unit
+    fun setImageViewClickListener(onImageViewClick: (id: Int,originId: Int) -> Unit){
         this.onImageViewClick = onImageViewClick
     }
 

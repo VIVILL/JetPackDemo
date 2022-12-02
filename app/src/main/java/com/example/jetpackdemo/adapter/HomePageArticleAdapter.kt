@@ -53,7 +53,7 @@ class HomePageArticleAdapter: PagingDataAdapter<Article, HomePageArticleAdapter.
             }
         }
 
-        fun bindImageViewClick(article: Article,onImageViewClick: (id: Int,collect: Boolean,position: Int) -> Unit) {
+        fun bindImageViewClick(article: Article,onImageViewClick: (id: Int,collect: Boolean) -> Unit) {
             //设置 favoriteImageView 监听
             binding.favoriteImageView.setOnClickListener{
                 // bindingAdapterPosition 返回的是Item所在Adapter的位置. absoluteAdapterPosition 返回的是合并后Item所在的位置.
@@ -65,7 +65,7 @@ class HomePageArticleAdapter: PagingDataAdapter<Article, HomePageArticleAdapter.
                 // 将 id 和 collect 回传 用于调用 api
                 // 不能直接回传 article.collect 这个数据不准
               //  onImageViewClick(article.id,article.collect,bindingAdapterPosition)
-                onImageViewClick(article.id,collect,bindingAdapterPosition)
+                onImageViewClick(article.id,collect)
                 // 无网络情况 不修改图标，应弹出无网络提示
 
                 // 设置后立即更新 UI 防止无网络的情况下 点击后无反应
@@ -101,8 +101,8 @@ class HomePageArticleAdapter: PagingDataAdapter<Article, HomePageArticleAdapter.
         this.onClick = onClick
     }
 
-    private lateinit var onImageViewClick: (id: Int,collect: Boolean,position: Int) -> Unit
-    fun setImageViewClickListener(onImageViewClick: (id: Int,collect: Boolean,position: Int) -> Unit){
+    private lateinit var onImageViewClick: (id: Int,collect: Boolean) -> Unit
+    fun setImageViewClickListener(onImageViewClick: (id: Int,collect: Boolean) -> Unit){
         this.onImageViewClick = onImageViewClick
     }
 

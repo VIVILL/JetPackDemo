@@ -64,7 +64,7 @@ class WanAndroidViewModel @Inject constructor(
     private val _collectAction = MutableSharedFlow<CollectAction>()
     val collectAction: SharedFlow<CollectAction> = _collectAction
 
-    fun collect(id: Int,position: Int) {
+    fun collect(id: Int) {
         viewModelScope.launch(exceptionHandler) {
             try{
                 val response: WanAndroidResponse<Article> = repository.collect(id)
@@ -75,9 +75,9 @@ class WanAndroidViewModel @Inject constructor(
                        "errorCode": 0,
                        "errorMsg": ""
                     * */
-                    _collectAction.emit(CollectAction.Success("收藏成功",position))
+                    _collectAction.emit(CollectAction.Success("收藏成功"))
                 } else {
-                    _collectAction.emit(CollectAction.Error("收藏失败",position))
+                    _collectAction.emit(CollectAction.Error("收藏失败"))
                 }
             }catch (e: Exception){
                 e.printStackTrace()
@@ -90,7 +90,7 @@ class WanAndroidViewModel @Inject constructor(
     private val _unCollectAction = MutableSharedFlow<UnCollectAction>()
     val unCollectAction: SharedFlow<UnCollectAction> = _unCollectAction
 
-    fun unCollect(id: Int,position: Int) {
+    fun unCollect(id: Int) {
         viewModelScope.launch(exceptionHandler) {
             try{
                 val response: WanAndroidResponse<Article> = repository.unCollect(id)
@@ -101,9 +101,9 @@ class WanAndroidViewModel @Inject constructor(
                        "errorCode": 0,
                        "errorMsg": ""
                     * */
-                    _unCollectAction.emit(UnCollectAction.Success("取消收藏成功",position))
+                    _unCollectAction.emit(UnCollectAction.Success("取消收藏成功"))
                 } else {
-                    _unCollectAction.emit(UnCollectAction.Error("取消收藏失败",position))
+                    _unCollectAction.emit(UnCollectAction.Error("取消收藏失败"))
                 }
             }catch (e: Exception){
                 e.printStackTrace()
@@ -120,15 +120,15 @@ class WanAndroidViewModel @Inject constructor(
     private val _unCollectByCollectionAction = MutableSharedFlow<UnCollectAction>()
     val unCollectByCollectionAction: SharedFlow<UnCollectAction> = _unCollectByCollectionAction
 
-    fun unCollectByCollection(id: Int,originId: Int,position: Int) {
+    fun unCollectByCollection(id: Int,originId: Int) {
         viewModelScope.launch(exceptionHandler) {
             try{
                 val response: WanAndroidResponse<Collect> = repository.unCollectByCollection(id,originId)
                 Log.d(TAG,"inner unCollectByCollection response.errorCode = ${response.errorCode}")
                 if(response.errorCode == 0) {
-                    _unCollectByCollectionAction.emit(UnCollectAction.Success("取消收藏成功",position))
+                    _unCollectByCollectionAction.emit(UnCollectAction.Success("取消收藏成功"))
                 } else {
-                    _unCollectByCollectionAction.emit(UnCollectAction.Error("取消收藏失败",position))
+                    _unCollectByCollectionAction.emit(UnCollectAction.Error("取消收藏失败"))
                 }
             }catch (e: Exception){
                 e.printStackTrace()
@@ -221,12 +221,12 @@ sealed class TouchAction {
 }
 
 sealed class CollectAction {
-    data class Success(val message: String,val position: Int): CollectAction()
-    data class Error(val message: String,val position: Int): CollectAction()
+    data class Success(val message: String): CollectAction()
+    data class Error(val message: String): CollectAction()
 }
 
 sealed class UnCollectAction {
-    data class Success(val message: String,val position: Int): UnCollectAction()
-    data class Error(val message: String,val position: Int): UnCollectAction()
+    data class Success(val message: String): UnCollectAction()
+    data class Error(val message: String): UnCollectAction()
 }
 

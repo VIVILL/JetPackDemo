@@ -72,10 +72,10 @@ class CollectionFragment : Fragment() {
             //跳转到带参数的 fragment
             navController.navigate(R.id.webFragment,bundle)
         }
-        collectionAdapter.setImageViewClickListener { id,originId,position->
-            // 如果是已收藏状态 就取消收藏 如果是未收藏状态则 收藏
-            Log.d(TAG,"id = $id originId = $originId position = $position")
-            viewModel.unCollectByCollection(id,originId,position)
+        collectionAdapter.setImageViewClickListener { id,originId->
+            // 取消收藏
+            Log.d(TAG,"id = $id originId = $originId")
+            viewModel.unCollectByCollection(id,originId)
 
         }
 
@@ -135,7 +135,7 @@ class CollectionFragment : Fragment() {
                                 Snackbar.LENGTH_SHORT
                             ).show()
                             // 删除取消收藏的数据
-                            collectionAdapter.notifyItemRemoved(it.position)
+                            collectionAdapter.refresh()
                         }
                         is UnCollectAction.Error -> {
                             Snackbar.make(
@@ -143,7 +143,7 @@ class CollectionFragment : Fragment() {
                                 it.message,
                                 Snackbar.LENGTH_SHORT
                             ).show()
-
+                            collectionAdapter.refresh()
                         }
 
                     }
