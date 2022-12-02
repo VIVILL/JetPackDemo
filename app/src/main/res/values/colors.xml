@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="purple_200">#FFBB86FC</color>
+    <color name="purple_500">#FF6200EE</color>
+    <color name="purple_700">#FF3700B3</color>
+    <color name="teal_200">#FF03DAC5</color>
+    <color name="teal_700">#FF018786</color>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+
+    <color name="launch_background">#FFE7E8E2</color>
+    <color name="green">#49bb79</color>
+    <color name="navigation_selected">#000000</color>
+    <color name="navigation_selected_orange">#ec6f1a</color>
+
+    <color name="circle_selected">#ec6f1a</color>
+    <color name="background_gray">#50828282</color>
+
+    <color name="background_orange">#ec6f1a</color>
+
+
+    <color name="orange_main">#ec6f1a</color>
+    <color name="orange_light">#ffd39b</color>
+    <color name="orange_deep">#ff6f3a</color>
+    <color name="orange_most">#C76114</color>
+    <color name="orange_litter">#80aa6136</color>
+
+    <color name="line">#e0e0e0</color>
+    <color name="tv_gray_litter">#FAF0E6</color>
+    <color name="tv_gray_normal">#c0c0c0</color>
+    <color name="tv_gray_deep">#818181</color>
+    <color name="tv_gray_lit">#50b1b1b1</color>
+    <color name="tv_gray">@android:color/darker_gray</color>
+    <color name="tv_color">#ffffff</color>
+    <color name="list_glide">#50e0e0e0</color>
+
+    <color name="transparent_half">#a0000000</color>
+    <color name="transparent_half_orange">#a0ec6f1a</color>
+    <color name="top_bar_normal_bg">#ec6f1a</color>
+
+    <color name="color_ffffff">#ffffff</color>
+    <color name="color_FF7F50">#FF7F50</color>
+
+</resources>
