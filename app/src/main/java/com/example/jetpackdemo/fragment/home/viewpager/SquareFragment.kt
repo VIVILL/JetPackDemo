@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
@@ -19,9 +20,7 @@ import com.example.jetpackdemo.adapter.FooterAdapter
 import com.example.jetpackdemo.adapter.SquareAdapter
 import com.example.jetpackdemo.databinding.FragmentSquareBinding
 import com.example.jetpackdemo.util.ExceptionHandler.exceptionHandler
-import com.example.jetpackdemo.viewmodel.CollectAction
-import com.example.jetpackdemo.viewmodel.UnCollectAction
-import com.example.jetpackdemo.viewmodel.WanAndroidViewModel
+import com.example.jetpackdemo.viewmodel.*
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collectLatest
@@ -42,6 +41,9 @@ class SquareFragment : Fragment() {
     private var _binding: FragmentSquareBinding? = null
     private val binding get() = _binding!!
     private val viewModel: WanAndroidViewModel by activityViewModels()
+
+    private val squareViewModel: SquareViewModel by viewModels()
+
     private val squareAdapter by lazy {
         SquareAdapter()
     }
@@ -110,7 +112,7 @@ class SquareFragment : Fragment() {
         viewLifecycleOwner.lifecycleScope.launch(exceptionHandler) {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 // 获取 PagingData
-                viewModel.getSquareData()
+                squareViewModel.SquareDataFlow
                     .catch {
                         Log.d(TAG,"Exception : ${it.message}")
                     }

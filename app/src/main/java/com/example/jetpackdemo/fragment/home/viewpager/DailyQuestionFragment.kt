@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.os.bundleOf
 import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
@@ -20,6 +21,7 @@ import com.example.jetpackdemo.adapter.FooterAdapter
 import com.example.jetpackdemo.databinding.FragmentDailyQuestionBinding
 import com.example.jetpackdemo.util.ExceptionHandler.exceptionHandler
 import com.example.jetpackdemo.viewmodel.CollectAction
+import com.example.jetpackdemo.viewmodel.DailyQuestionViewModel
 import com.example.jetpackdemo.viewmodel.UnCollectAction
 import com.example.jetpackdemo.viewmodel.WanAndroidViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -39,7 +41,12 @@ class DailyQuestionFragment : Fragment() {
 
     private var _binding: FragmentDailyQuestionBinding? = null
     private val binding get() = _binding!!
-    private val viewModel: WanAndroidViewModel by activityViewModels()
+
+    private val wanAndroidViewModel: WanAndroidViewModel by activityViewModels()
+
+    private val dailyQuestionViewModel: DailyQuestionViewModel by viewModels()
+
+
     private val dailyQuestionAdapter by lazy{
         DailyQuestionAdapter()
     }
@@ -78,9 +85,9 @@ class DailyQuestionFragment : Fragment() {
             // 如果是已收藏状态 就取消收藏 如果是未收藏状态则 收藏
             Log.d(TAG,"collect = $collect")
             if (collect){
-                viewModel.unCollect(id)
+                wanAndroidViewModel.unCollect(id)
             }else {
-                viewModel.collect(id)
+                wanAndroidViewModel.collect(id)
             }
         }
         // 为RecyclerView配置adapter
@@ -94,7 +101,7 @@ class DailyQuestionFragment : Fragment() {
 
         binding.recyclerview.setTouchEventListener{
             Log.d(TAG,"inner setTouchEventListener")
-            viewModel.touchRecyclerview(it)
+            wanAndroidViewModel.touchRecyclerview(it)
         }
 
         return binding.root
@@ -110,7 +117,7 @@ class DailyQuestionFragment : Fragment() {
         viewLifecycleOwner.lifecycleScope.launch(exceptionHandler) {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 // 获取 PagingData
-                viewModel.getDailyQuestion()
+                dailyQuestionViewModel.dailyQuestionFlow
                     .catch {
                         Log.d(TAG,"Exception : ${it.message}")
                     }
@@ -135,7 +142,7 @@ class DailyQuestionFragment : Fragment() {
         // 收藏
         viewLifecycleOwner.lifecycleScope.launch(exceptionHandler) {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.collectAction.collect {
+                wanAndroidViewModel.collectAction.collect {
                     when (it) {
                         is CollectAction.Success -> {
                             Log.d(TAG,"CollectAction.Success")
@@ -153,7 +160,7 @@ class DailyQuestionFragment : Fragment() {
         // 取消收藏
         viewLifecycleOwner.lifecycleScope.launch(exceptionHandler) {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.unCollectAction.collect {
+                wanAndroidViewModel.unCollectAction.collect {
                     when (it) {
                         is UnCollectAction.Success -> {
                             Log.d(TAG,"UnCollectAction.Success")

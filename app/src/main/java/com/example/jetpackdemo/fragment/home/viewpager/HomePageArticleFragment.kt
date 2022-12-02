@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.os.bundleOf
 import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
@@ -39,8 +40,9 @@ class HomePageArticleFragment() : Fragment() {
     private var _binding: FragmentHomePageBinding? = null
     private val binding get() = _binding!!
 
-    private val viewModel: WanAndroidViewModel by activityViewModels()
+    private val wanAndroidViewModel: WanAndroidViewModel by activityViewModels()
     private val userViewModel: UserViewModel by activityViewModels()
+    private val homePageArticleViewModel: HomePageArticleViewModel by viewModels()
 
     private val headerItemAdapter by lazy {
         HeaderItemAdapter(listOf()){link, title ->
@@ -86,15 +88,15 @@ class HomePageArticleFragment() : Fragment() {
 
         headerAdapter.setOnViewAttachedListener {
             Log.d(TAG, "viewModel.autoScroll()")
-            viewModel.autoScroll()
+            wanAndroidViewModel.autoScroll()
         }
         headerAdapter.setOnViewDetachedListener {
             Log.d(TAG, "viewModel.cancelAutoScroll()")
-            viewModel.cancelAutoScroll()
+            wanAndroidViewModel.cancelAutoScroll()
         }
         headerAdapter.setTouchEventListener { motionEvent ->
             Log.d(TAG, "inner touch motionEvent = $motionEvent")
-            viewModel.touchViewPager2(motionEvent)
+            wanAndroidViewModel.touchViewPager2(motionEvent)
         }
 
         // 解决RecyclerView刷新局部Item闪烁
@@ -114,9 +116,9 @@ class HomePageArticleFragment() : Fragment() {
             // 如果是已收藏状态 就取消收藏 如果是未收藏状态则 收藏
             Log.d(TAG,"inner setImageViewClickListener collect = $collect")
             if (collect){
-                viewModel.unCollect(id)
+                wanAndroidViewModel.unCollect(id)
             }else {
-                viewModel.collect(id)
+                wanAndroidViewModel.collect(id)
             }
         }
 
@@ -128,17 +130,17 @@ class HomePageArticleFragment() : Fragment() {
         binding.recyclerview.setItemViewCacheSize(10)
 
         // 更新 Banner
-        viewModel.updateBannerList()
+        wanAndroidViewModel.updateBannerList()
 
         binding.swipeLayout.setOnRefreshListener {
             // 刷新时 更新 Banner
-            viewModel.updateBannerList()
+            wanAndroidViewModel.updateBannerList()
             // 更新 PagingDataAdapter
             articleAdapter.refresh()
         }
         binding.recyclerview.setTouchEventListener{
             Log.d(TAG,"inner setTouchEventListener")
-            viewModel.touchRecyclerview(it)
+            wanAndroidViewModel.touchRecyclerview(it)
         }
         return binding.root
 
@@ -153,7 +155,7 @@ class HomePageArticleFragment() : Fragment() {
         // bannerListFlow
         viewLifecycleOwner.lifecycleScope.launch(exceptionHandler) {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.bannerListStateFlow.collect{ value ->
+                wanAndroidViewModel.bannerListStateFlow.collect{ value ->
                     Log.d(TAG," value size = ${value.size}")
                     // 将获取的数据 进行拼接处理
                     val list = ArrayList<Banner>()
@@ -175,7 +177,7 @@ class HomePageArticleFragment() : Fragment() {
 
         viewLifecycleOwner.lifecycleScope.launch(exceptionHandler) {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.RESUMED) {
-                viewModel.autoScrollAction.collect {
+                wanAndroidViewModel.autoScrollAction.collect {
                     when (it) {
                         is AutoScrollAction.AutoScroll -> {
                             Log.d(TAG, "inner AutoScroll")
@@ -194,7 +196,7 @@ class HomePageArticleFragment() : Fragment() {
         viewLifecycleOwner.lifecycleScope.launch(exceptionHandler){
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 // 获取 PagingData
-                viewModel.getArticle()
+                homePageArticleViewModel.homePageArticleFlow
                     .catch {
                         Log.d(TAG,"Exception : ${it.message}")
                     }
@@ -219,7 +221,7 @@ class HomePageArticleFragment() : Fragment() {
         // 收藏
         viewLifecycleOwner.lifecycleScope.launch(exceptionHandler) {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.collectAction.collect {
+                wanAndroidViewModel.collectAction.collect {
                     when (it) {
                         is CollectAction.Success -> {
                             Log.d(TAG,"CollectAction.Success")
@@ -238,7 +240,7 @@ class HomePageArticleFragment() : Fragment() {
         // 取消收藏
         viewLifecycleOwner.lifecycleScope.launch(exceptionHandler) {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.unCollectAction.collect {
+                wanAndroidViewModel.unCollectAction.collect {
                     when (it) {
                         is UnCollectAction.Success -> {
                             Log.d(TAG,"UnCollectAction.Success")

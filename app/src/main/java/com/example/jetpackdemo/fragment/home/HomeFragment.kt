@@ -27,7 +27,7 @@ class HomeFragment : Fragment() {
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
 
-    private val viewModel: WanAndroidViewModel by activityViewModels()
+    private val wanAndroidViewModel: WanAndroidViewModel by activityViewModels()
 
     private var mLayoutMediator: TabLayoutMediator? = null
 
@@ -91,7 +91,7 @@ class HomeFragment : Fragment() {
     private fun subscribeUI() {
         viewLifecycleOwner.lifecycleScope.launch(exceptionHandler){
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.recyclerviewTouchAction.collect {
+                wanAndroidViewModel.recyclerviewTouchAction.collect {
                     when (it) {
                         is TouchAction.Touch -> {
                             Log.d(TAG, "inner Touch")

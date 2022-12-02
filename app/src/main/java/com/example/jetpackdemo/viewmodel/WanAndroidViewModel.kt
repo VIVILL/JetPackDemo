@@ -41,24 +41,7 @@ class WanAndroidViewModel @Inject constructor(
         }
     }
 
-    // 获取文章
-    fun getArticle(): Flow<PagingData<Article>> {
-        return repository.getHomePageArticle().cachedIn(viewModelScope)
-    }
 
-    /**
-     * 请求每日一问数据
-     */
-    fun getDailyQuestion(): Flow<PagingData<Article>> {
-        return repository.getDailyQuestion().cachedIn(viewModelScope)
-    }
-
-    /**
-     * 请求广场数据
-     */
-    fun getSquareData(): Flow<PagingData<Article>> {
-        return repository.getSquareData().cachedIn(viewModelScope)
-    }
 
     // 使用 SharedFlow
     private val _collectAction = MutableSharedFlow<CollectAction>()
