@@ -173,7 +173,7 @@ class DailyQuestionFragment : Fragment() {
             }
         }
         viewLifecycleOwner.lifecycleScope.launch(exceptionHandler) {
-            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.RESUMED) {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 userViewModel.loginUiState.collect {
                     // 自动刷新
                     dailyQuestionAdapter.refresh()
