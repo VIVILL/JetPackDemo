@@ -36,7 +36,7 @@ private const val ARG_PARAM2 = "param2"
 
 private const val TAG = "HomePageArticleFragment"
 @AndroidEntryPoint
-class HomePageArticleFragment() : Fragment() {
+class HomePageArticleFragment: Fragment() {
     private var _binding: FragmentHomePageBinding? = null
     private val binding get() = _binding!!
 
@@ -129,12 +129,11 @@ class HomePageArticleFragment() : Fragment() {
         // 设置需要缓存的 ViewHolder数量 防止离屏后再显示时 频繁执行 onBindViewHolder
         binding.recyclerview.setItemViewCacheSize(10)
 
-        // 更新 Banner
-        wanAndroidViewModel.updateBannerList()
 
         binding.swipeLayout.setOnRefreshListener {
-            // 刷新时 更新 Banner
-            wanAndroidViewModel.updateBannerList()
+            Log.d(TAG,"inner setOnRefreshListener")
+            // 刷新时 重新加载数据
+            homePageArticleViewModel.loadBanner()
             // 更新 PagingDataAdapter
             articleAdapter.refresh()
         }
@@ -152,10 +151,10 @@ class HomePageArticleFragment() : Fragment() {
     }
 
     private fun subscribeUI() {
-        // bannerListFlow
+        // banner
         viewLifecycleOwner.lifecycleScope.launch(exceptionHandler) {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                wanAndroidViewModel.bannerListStateFlow.collect{ value ->
+                homePageArticleViewModel.banner.collect{ value ->
                     Log.d(TAG," value size = ${value.size}")
                     // 将获取的数据 进行拼接处理
                     val list = ArrayList<Banner>()
@@ -258,15 +257,19 @@ class HomePageArticleFragment() : Fragment() {
         viewLifecycleOwner.lifecycleScope.launch(exceptionHandler) {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 userViewModel.loginUiState.collect {
-                    // 处于登录状态时 显示退出按钮 和user名
-                    if (it.loginState == 0){
+                    if (userViewModel.stateChanged){
                         Log.d(TAG,"user username = ${it.user?.username}")
-                        // 登录后自动刷新下
-                       articleAdapter.refresh()
+                        // 状态改变时 自动刷新下
+                        articleAdapter.refresh()
+                        Log.d(TAG, "after articleAdapter.refresh")
+                        userViewModel.stateChanged = false
                     }
                 }
+
             }
         }
+
+
     }
 
 

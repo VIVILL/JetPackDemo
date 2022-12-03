@@ -41,6 +41,7 @@ class UserViewModel @Inject constructor(
         Log.d(TAG,"inner init")
     }
 
+    var stateChanged: Boolean = false
 
     lateinit var user: User
 
@@ -72,6 +73,8 @@ class UserViewModel @Inject constructor(
                     // 登录成功  初始化 user
                     user = response.data
                     Log.d(TAG,"user username = ${user.username}")
+                    stateChanged = true
+                    Log.d(TAG,"stateChanged = $stateChanged")
                     updateLoginUiState(0,user)
                 } else if(response.errorCode == -1){
                     // "data": null,
@@ -99,6 +102,8 @@ class UserViewModel @Inject constructor(
                 if(response.errorCode == 0) {
                     _logout.emit(LogoutUiAction.Success)
                     // 退出后 更新登录状态
+                    stateChanged = true
+                    Log.d(TAG,"stateChanged = $stateChanged")
                     updateLoginUiState(-1,user)
                 }
             }catch (e: Exception){

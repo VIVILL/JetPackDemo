@@ -22,27 +22,6 @@ private const val TAG = "WanAndroidViewModel"
 class WanAndroidViewModel @Inject constructor(
     private val repository: WanAndroidRepository
 ) : ViewModel(){
-    private val _bannerListStateFlow = MutableStateFlow<List<Banner>>(listOf()/*ArrayList()*/)
-
-    val bannerListStateFlow: StateFlow<List<Banner>> = _bannerListStateFlow
-
-    fun updateBannerList() {
-        // 更新  value 数据
-        viewModelScope.launch(exceptionHandler) {
-            _bannerListStateFlow.value = repository.getBannerFlow()
-                .catch { throwable ->
-                    // Catch exceptions in all down stream flow
-                    // Any error occurs after this catch operator
-                    // will not be caught here
-                    println(throwable)
-                }
-                .stateIn(viewModelScope)
-                .value
-        }
-    }
-
-
-
     // 使用 SharedFlow
     private val _collectAction = MutableSharedFlow<CollectAction>()
     val collectAction: SharedFlow<CollectAction> = _collectAction
