@@ -44,6 +44,7 @@ class HomePageArticleFragment: Fragment() {
     private val wanAndroidViewModel: WanAndroidViewModel by activityViewModels()
     private val userViewModel: UserViewModel by activityViewModels()
     private val homePageArticleViewModel: HomePageArticleViewModel by viewModels()
+    private val autoScrollViewModel: AutoScrollViewModel by activityViewModels()
 
     private val headerItemAdapter by lazy {
         HeaderItemAdapter(listOf()){link, title ->
@@ -93,17 +94,17 @@ class HomePageArticleFragment: Fragment() {
             viewLifecycleOwner.lifecycleScope.launch(exceptionHandler) {
                 viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                     delay(3000L)
-                    wanAndroidViewModel.autoScroll()
+                    autoScrollViewModel.autoScroll()
                 }
             }
         }
         headerAdapter.setOnViewDetachedListener {
             Log.d(TAG, "viewModel.cancelAutoScroll()")
-            wanAndroidViewModel.cancelAutoScroll()
+            autoScrollViewModel.cancelAutoScroll()
         }
         headerAdapter.setTouchEventListener { motionEvent ->
             Log.d(TAG, "inner touch motionEvent = $motionEvent")
-            wanAndroidViewModel.touchViewPager2(motionEvent)
+            autoScrollViewModel.touchViewPager2(motionEvent)
         }
 
         // 解决RecyclerView刷新局部Item闪烁
@@ -146,7 +147,7 @@ class HomePageArticleFragment: Fragment() {
         }
         binding.recyclerview.setTouchEventListener{
             Log.d(TAG,"inner setTouchEventListener")
-            wanAndroidViewModel.touchRecyclerview(it)
+            autoScrollViewModel.touchRecyclerview(it)
         }
         return binding.root
 
@@ -183,7 +184,7 @@ class HomePageArticleFragment: Fragment() {
 
         viewLifecycleOwner.lifecycleScope.launch(exceptionHandler) {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.RESUMED) {
-                wanAndroidViewModel.autoScrollAction.collect {
+                autoScrollViewModel.autoScrollAction.collect {
                     when (it) {
                         is AutoScrollAction.AutoScroll -> {
                             Log.d(TAG, "inner AutoScroll")

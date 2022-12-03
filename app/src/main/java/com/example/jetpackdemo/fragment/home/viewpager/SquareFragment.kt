@@ -44,6 +44,7 @@ class SquareFragment : Fragment() {
     private val userViewModel: UserViewModel by activityViewModels()
 
     private val homePageArticleViewModel: HomePageArticleViewModel by viewModels()
+    private val autoScrollViewModel: AutoScrollViewModel by activityViewModels()
 
     private val squareAdapter by lazy {
         SquareAdapter()
@@ -99,7 +100,7 @@ class SquareFragment : Fragment() {
 
         binding.recyclerview.setTouchEventListener{
             Log.d(TAG,"inner setTouchEventListener")
-            viewModel.touchRecyclerview(it)
+            autoScrollViewModel.touchRecyclerview(it)
         }
         return binding.root
     }

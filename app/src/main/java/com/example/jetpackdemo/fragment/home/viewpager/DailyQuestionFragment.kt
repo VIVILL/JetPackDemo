@@ -44,6 +44,8 @@ class DailyQuestionFragment : Fragment() {
 
     private val homePageArticleViewModel: HomePageArticleViewModel by viewModels()
 
+    private val autoScrollViewModel: AutoScrollViewModel by activityViewModels()
+
 
     private val dailyQuestionAdapter by lazy{
         DailyQuestionAdapter()
@@ -99,7 +101,7 @@ class DailyQuestionFragment : Fragment() {
 
         binding.recyclerview.setTouchEventListener{
             Log.d(TAG,"inner setTouchEventListener")
-            wanAndroidViewModel.touchRecyclerview(it)
+            autoScrollViewModel.touchRecyclerview(it)
         }
 
         return binding.root

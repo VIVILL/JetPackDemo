@@ -14,6 +14,7 @@ import androidx.lifecycle.repeatOnLifecycle
 import com.example.jetpackdemo.adapter.ViewPagerAdapter
 import com.example.jetpackdemo.databinding.FragmentHomeBinding
 import com.example.jetpackdemo.util.ExceptionHandler.exceptionHandler
+import com.example.jetpackdemo.viewmodel.AutoScrollViewModel
 import com.example.jetpackdemo.viewmodel.TouchAction
 import com.example.jetpackdemo.viewmodel.WanAndroidViewModel
 import com.google.android.material.tabs.TabLayoutMediator
@@ -27,7 +28,7 @@ class HomeFragment : Fragment() {
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
 
-    private val wanAndroidViewModel: WanAndroidViewModel by activityViewModels()
+    private val autoScrollViewModel: AutoScrollViewModel by activityViewModels()
 
     private var mLayoutMediator: TabLayoutMediator? = null
 
@@ -91,7 +92,7 @@ class HomeFragment : Fragment() {
     private fun subscribeUI() {
         viewLifecycleOwner.lifecycleScope.launch(exceptionHandler){
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                wanAndroidViewModel.recyclerviewTouchAction.collect {
+                autoScrollViewModel.recyclerviewTouchAction.collect {
                     when (it) {
                         is TouchAction.Touch -> {
                             Log.d(TAG, "inner Touch")
