@@ -1,25 +1,21 @@
 package com.example.jetpackdemo.viewmodel
 
 import android.util.Log
-import android.view.MotionEvent
 import androidx.lifecycle.*
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import com.example.jetpackdemo.bean.*
 import com.example.jetpackdemo.repository.WanAndroidRepository
-import com.example.jetpackdemo.util.ExceptionHandler
 import com.example.jetpackdemo.util.ExceptionHandler.exceptionHandler
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-private const val TAG = "WanAndroidViewModel"
+private const val TAG = "CollectViewModel"
 
 @HiltViewModel
-class WanAndroidViewModel @Inject constructor(
+class CollectViewModel @Inject constructor(
     private val repository: WanAndroidRepository
 ) : ViewModel(){
     // 使用 SharedFlow

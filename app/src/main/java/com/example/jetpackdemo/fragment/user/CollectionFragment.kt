@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.os.bundleOf
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -23,9 +24,8 @@ import com.example.jetpackdemo.adapter.FooterAdapter
 import com.example.jetpackdemo.databinding.FragmentCollectionBinding
 import com.example.jetpackdemo.util.ExceptionHandler
 import com.example.jetpackdemo.util.ExceptionHandler.exceptionHandler
+import com.example.jetpackdemo.viewmodel.CollectViewModel
 import com.example.jetpackdemo.viewmodel.UnCollectAction
-import com.example.jetpackdemo.viewmodel.UserViewModel
-import com.example.jetpackdemo.viewmodel.WanAndroidViewModel
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.catch
@@ -38,7 +38,7 @@ class CollectionFragment : Fragment() {
     private var _binding: FragmentCollectionBinding? = null
     private val binding get() = _binding!!
 
-    private val viewModel: WanAndroidViewModel by viewModels()
+    private val collectViewModel: CollectViewModel by viewModels()
 
     private val collectionAdapter by lazy {
         CollectionAdapter()
@@ -75,7 +75,7 @@ class CollectionFragment : Fragment() {
         collectionAdapter.setImageViewClickListener { id,originId->
             // 取消收藏
             Log.d(TAG,"id = $id originId = $originId")
-            viewModel.unCollectByCollection(id,originId)
+            collectViewModel.unCollectByCollection(id,originId)
 
         }
 
@@ -101,7 +101,7 @@ class CollectionFragment : Fragment() {
         viewLifecycleOwner.lifecycleScope.launch(exceptionHandler) {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 // 获取 PagingData
-                viewModel.getCollection()
+                collectViewModel.getCollection()
                     .catch {
                         Log.d(TAG,"Exception : ${it.message}")
                     }
@@ -125,7 +125,7 @@ class CollectionFragment : Fragment() {
         // 取消收藏
         viewLifecycleOwner.lifecycleScope.launch(exceptionHandler) {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.unCollectByCollectionAction.collect {
+                collectViewModel.unCollectByCollectionAction.collect {
                     when (it) {
                         is UnCollectAction.Success -> {
                             Log.d(TAG,"UnCollectAction.Success")

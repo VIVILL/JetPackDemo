@@ -40,10 +40,10 @@ class SquareFragment : Fragment() {
 
     private var _binding: FragmentSquareBinding? = null
     private val binding get() = _binding!!
-    private val viewModel: WanAndroidViewModel by activityViewModels()
-    private val userViewModel: UserViewModel by activityViewModels()
 
     private val homePageArticleViewModel: HomePageArticleViewModel by viewModels()
+    private val collectViewModel: CollectViewModel by viewModels()
+    private val userViewModel: UserViewModel by activityViewModels()
     private val autoScrollViewModel: AutoScrollViewModel by activityViewModels()
 
     private val squareAdapter by lazy {
@@ -82,9 +82,9 @@ class SquareFragment : Fragment() {
             // 如果是已收藏状态 就取消收藏 如果是未收藏状态则 收藏
             Log.d(TAG,"collect = $collect")
             if (collect){
-                viewModel.unCollect(id)
+                collectViewModel.unCollect(id)
             }else {
-                viewModel.collect(id)
+                collectViewModel.collect(id)
             }
         }
 
@@ -138,7 +138,7 @@ class SquareFragment : Fragment() {
 
         viewLifecycleOwner.lifecycleScope.launch(exceptionHandler){
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.collectAction.collect {
+                collectViewModel.collectAction.collect {
                     when (it) {
                         is CollectAction.Success -> {
                             Log.d(TAG,"CollectAction.Success")
@@ -157,7 +157,7 @@ class SquareFragment : Fragment() {
         // 取消收藏
         viewLifecycleOwner.lifecycleScope.launch(exceptionHandler) {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.unCollectAction.collect {
+                collectViewModel.unCollectAction.collect {
                     when (it) {
                         is UnCollectAction.Success -> {
                             Log.d(TAG,"UnCollectAction.Success")

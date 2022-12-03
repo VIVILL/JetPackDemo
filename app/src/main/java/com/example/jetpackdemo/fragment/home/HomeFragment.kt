@@ -16,7 +16,6 @@ import com.example.jetpackdemo.databinding.FragmentHomeBinding
 import com.example.jetpackdemo.util.ExceptionHandler.exceptionHandler
 import com.example.jetpackdemo.viewmodel.AutoScrollViewModel
 import com.example.jetpackdemo.viewmodel.TouchAction
-import com.example.jetpackdemo.viewmodel.WanAndroidViewModel
 import com.google.android.material.tabs.TabLayoutMediator
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch

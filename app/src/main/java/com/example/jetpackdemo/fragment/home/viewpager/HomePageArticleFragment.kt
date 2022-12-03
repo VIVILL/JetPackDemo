@@ -41,9 +41,9 @@ class HomePageArticleFragment: Fragment() {
     private var _binding: FragmentHomePageBinding? = null
     private val binding get() = _binding!!
 
-    private val wanAndroidViewModel: WanAndroidViewModel by activityViewModels()
-    private val userViewModel: UserViewModel by activityViewModels()
     private val homePageArticleViewModel: HomePageArticleViewModel by viewModels()
+    private val collectViewModel: CollectViewModel by viewModels()
+    private val userViewModel: UserViewModel by activityViewModels()
     private val autoScrollViewModel: AutoScrollViewModel by activityViewModels()
 
     private val headerItemAdapter by lazy {
@@ -124,9 +124,9 @@ class HomePageArticleFragment: Fragment() {
             // 如果是已收藏状态 就取消收藏 如果是未收藏状态则 收藏
             Log.d(TAG,"inner setImageViewClickListener collect = $collect")
             if (collect){
-                wanAndroidViewModel.unCollect(id)
+                collectViewModel.unCollect(id)
             }else {
-                wanAndroidViewModel.collect(id)
+                collectViewModel.collect(id)
             }
         }
 
@@ -228,7 +228,7 @@ class HomePageArticleFragment: Fragment() {
         // 收藏
         viewLifecycleOwner.lifecycleScope.launch(exceptionHandler) {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                wanAndroidViewModel.collectAction.collect {
+                collectViewModel.collectAction.collect {
                     when (it) {
                         is CollectAction.Success -> {
                             Log.d(TAG,"CollectAction.Success")
@@ -247,7 +247,7 @@ class HomePageArticleFragment: Fragment() {
         // 取消收藏
         viewLifecycleOwner.lifecycleScope.launch(exceptionHandler) {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                wanAndroidViewModel.unCollectAction.collect {
+                collectViewModel.unCollectAction.collect {
                     when (it) {
                         is UnCollectAction.Success -> {
                             Log.d(TAG,"UnCollectAction.Success")
