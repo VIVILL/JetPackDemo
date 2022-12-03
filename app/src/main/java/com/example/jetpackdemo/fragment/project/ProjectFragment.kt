@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.os.bundleOf
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -30,7 +31,7 @@ class ProjectFragment : Fragment() {
     private var _binding: FragmentProjectBinding? = null
     private val binding get() = _binding!!
 
-    private val viewModel: ProjectViewModel by viewModels()
+    private val viewModel: ProjectViewModel by activityViewModels()
     private val projectAdapter by lazy { ProjectTreeAdapter() }
 
 
@@ -47,8 +48,9 @@ class ProjectFragment : Fragment() {
         _binding = FragmentProjectBinding.inflate(inflater, container, false)
         projectAdapter.setOnItemClickListener { id , name ->
             Log.d(TAG,"project id = $id name = $name")
+            viewModel.intiProjectContentFlow(id)
             // 设置显示 DetailFragment
-            val bundle = bundleOf("projectId" to id, "title" to name)
+            val bundle = bundleOf( "title" to name)
             //跳转到带参数的 fragment
             findNavController().navigate(R.id.action_projectFragment_to_projectDetailFragment,bundle)
         }
@@ -56,7 +58,7 @@ class ProjectFragment : Fragment() {
         // 设置 adapter
         binding.recyclerview.adapter = projectAdapter
         // 更新 ProjectTree
-        viewModel.loadProjectTreeList()
+      //  viewModel.loadProjectTreeList()
 
         // 下拉刷新 更新 项目分类
         binding.swipeLayout.setOnRefreshListener {

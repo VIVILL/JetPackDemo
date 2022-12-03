@@ -7,7 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
@@ -20,6 +20,7 @@ import com.example.jetpackdemo.databinding.FragmentProjectDetailBinding
 import com.example.jetpackdemo.util.ExceptionHandler.exceptionHandler
 import com.example.jetpackdemo.viewmodel.ProjectViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -31,16 +32,12 @@ class ProjectDetailFragment: Fragment() {
     private var _binding: FragmentProjectDetailBinding? = null
     private val binding get() = _binding!!
 
-    private val viewModel: ProjectViewModel by viewModels()
+    private val viewModel: ProjectViewModel by activityViewModels()
     private val projectDetailAdapter by lazy { ProjectDetailAdapter() }
-    private var projectId = 0
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        arguments?.let {
-            projectId = it.getInt(ARG_PROJECT_ID)
-        }
     }
 
     override fun onCreateView(
@@ -70,6 +67,20 @@ class ProjectDetailFragment: Fragment() {
             findNavController().navigateUp()
         }
 
+        // 下拉刷新 更新 项目
+        binding.swipeLayout.setOnRefreshListener {
+            // 更新
+            viewModel.loadProjectContent()
+
+            viewLifecycleOwner.lifecycleScope.launch(exceptionHandler) {
+                viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                    //数据无更新时 一段时间后停止显示 swipeLayout
+                    delay(2000L)
+                    binding.swipeLayout.isRefreshing = false
+                }
+            }
+        }
+
         return binding.root
     }
 
@@ -81,9 +92,7 @@ class ProjectDetailFragment: Fragment() {
     private fun subscribeUI() {
         viewLifecycleOwner.lifecycleScope.launch(exceptionHandler) {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                // 获取 PagingData
-                Log.d(TAG,"projectId = $projectId")
-                viewModel.loadProjectContentById(projectId)
+                viewModel.projectContentFlow
                     .catch {
                         Log.d(TAG,"Exception : ${it.message}")
                     }
@@ -91,6 +100,8 @@ class ProjectDetailFragment: Fragment() {
                         Log.d(TAG,"inner collectLatest")
                         // paging 使用 submitData 填充 adapter
                         projectDetailAdapter.submitData(it)
+                        //停止显示 swipeLayout
+                        binding.swipeLayout.isRefreshing = false
                     }
             }
         }
