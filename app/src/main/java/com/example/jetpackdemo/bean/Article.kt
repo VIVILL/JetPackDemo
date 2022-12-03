@@ -8,7 +8,7 @@ data class Article (
 
     @field:SerializedName("author") val author: String,
     @field:SerializedName("shareUser") val shareUser: String,
-    @field:SerializedName("collect") var collect: Boolean,
+    @field:SerializedName("collect") val collect: Boolean,
     @field:SerializedName("desc") val desc: String,
     @field:SerializedName("envelopePic") val envelopePic: String,
     @field:SerializedName("title") val title: String,
