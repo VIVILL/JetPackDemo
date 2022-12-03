@@ -100,8 +100,8 @@ class CollectionFragment : Fragment() {
     private fun subscribeUI() {
         viewLifecycleOwner.lifecycleScope.launch(exceptionHandler) {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                // 获取 PagingData
-                collectViewModel.getCollection()
+                // 监听 PagingData
+                collectViewModel.collectionFlow
                     .catch {
                         Log.d(TAG,"Exception : ${it.message}")
                     }

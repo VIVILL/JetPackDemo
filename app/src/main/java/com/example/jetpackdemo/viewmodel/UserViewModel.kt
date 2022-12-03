@@ -52,9 +52,7 @@ class UserViewModel @Inject constructor(
     // 更新 登录状态
 
     private fun updateLoginUiState(loginState: Int,user: User?) {
-        viewModelScope.launch(exceptionHandler) {
-            _loginUiState.value = LoginUiState(loginState,user)
-        }
+        _loginUiState.value = LoginUiState(loginState,user)
     }
 
 

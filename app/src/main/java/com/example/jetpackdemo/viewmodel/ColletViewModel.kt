@@ -71,9 +71,11 @@ class CollectViewModel @Inject constructor(
     }
 
     // 获取收藏数据
-    fun getCollection(): Flow<PagingData<Collect>> {
+/*    fun getCollection(): Flow<PagingData<Collect>> {
         return repository.getCollection().cachedIn(viewModelScope)
-    }
+    }*/
+    // 初始化 收藏 数据
+    val collectionFlow = repository.getCollection().cachedIn(viewModelScope)
 
     private val _unCollectByCollectionAction = MutableSharedFlow<UnCollectAction>()
     val unCollectByCollectionAction: SharedFlow<UnCollectAction> = _unCollectByCollectionAction

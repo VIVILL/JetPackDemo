@@ -21,14 +21,7 @@ class HomePageArticleViewModel @Inject constructor(
     val banner: StateFlow<List<Banner>> = _banner
 
     init {
-        viewModelScope.launch(exceptionHandler) {
-            _banner.value = repository.getBannerFlow()
-                .catch { throwable ->
-                    println(throwable)
-                }
-                .stateIn(viewModelScope)
-                .value
-        }
+        loadBanner()
     }
 
     fun loadBanner(){

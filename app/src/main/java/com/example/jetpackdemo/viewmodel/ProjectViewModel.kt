@@ -24,14 +24,7 @@ class ProjectViewModel @Inject constructor(
     val projectTreeListStateFlow: StateFlow<List<ProjectTree>> = _projectTreeListStateFlow
 
     init {
-        viewModelScope.launch(exceptionHandler) {
-            _projectTreeListStateFlow.value = repository.loadProjectTree()
-                .catch { throwable ->
-                    println(throwable)
-                }
-                .stateIn(viewModelScope)
-                .value
-        }
+        loadProjectTreeList()
     }
 
     fun loadProjectTreeList() {
@@ -53,12 +46,12 @@ class ProjectViewModel @Inject constructor(
     fun intiProjectContentFlow(id: Int){
         Log.d(TAG,"inner intiProjectContentFlow projectId = $projectId id = $id")
         projectId = id
-        projectContentFlow = loadProjectContent()
+        loadProjectContent()
     }
 
-    fun loadProjectContent(): Flow<PagingData<ProjectContent>> {
+    fun loadProjectContent(){
         Log.d(TAG,"inner loadProjectContentById projectId = $projectId")
-        return  repository.loadContentById(projectId).cachedIn(viewModelScope)
+        projectContentFlow =   repository.loadContentById(projectId).cachedIn(viewModelScope)
     }
 
 }
