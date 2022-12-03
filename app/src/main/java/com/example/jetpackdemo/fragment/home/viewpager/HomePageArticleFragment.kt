@@ -26,6 +26,7 @@ import com.example.jetpackdemo.databinding.FragmentHomePageBinding
 import com.example.jetpackdemo.util.ExceptionHandler.exceptionHandler
 import com.example.jetpackdemo.viewmodel.*
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -88,7 +89,13 @@ class HomePageArticleFragment: Fragment() {
 
         headerAdapter.setOnViewAttachedListener {
             Log.d(TAG, "viewModel.autoScroll()")
-            wanAndroidViewModel.autoScroll()
+            // 延时3s后 开启自动滑动
+            viewLifecycleOwner.lifecycleScope.launch(exceptionHandler) {
+                viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                    delay(3000L)
+                    wanAndroidViewModel.autoScroll()
+                }
+            }
         }
         headerAdapter.setOnViewDetachedListener {
             Log.d(TAG, "viewModel.cancelAutoScroll()")
