@@ -26,37 +26,23 @@ class MainActivity : AppCompatActivity() {
         ActivityMainBinding.inflate(layoutInflater)
     }
 
-    private val viewModel: UserViewModel by viewModels()
+    private val userViewModel: UserViewModel by viewModels()
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
-        subscribeUI()
-        val name: String? = viewModel.getLocalName()
-        val password: String? = viewModel.getLocalPassword()
+        val name: String? = userViewModel.getLocalName()
+        val password: String? = userViewModel.getLocalPassword()
         //自动登录
-        if (viewModel.getAutoLogin() && name != null && password != null){
-            viewModel.login(name, password)
+        if (userViewModel.getAutoLogin() && name != null && password != null){
+            userViewModel.login(name, password)
         }
 
         initNavigation()
     }
 
-    private fun subscribeUI(){
-        lifecycleScope.launch(exceptionHandler) {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.loginUiState.collect {
-                    // 处于登录状态时 显示退出按钮 和user名
-                    if (it.loginState == 0){
-                        Log.d(TAG,"username = ${it.user?.username}")
-                    }
-                }
-            }
-        }
-
-    }
 
     /**
      * BottomNav显示控制
