@@ -39,7 +39,7 @@ class DailyQuestionFragment : Fragment() {
     private var _binding: FragmentDailyQuestionBinding? = null
     private val binding get() = _binding!!
 
-    private val homePageArticleViewModel: HomePageArticleViewModel by viewModels()
+    private val homePageArticleViewModel: HomePageArticleViewModel by activityViewModels()
     private val collectViewModel: CollectViewModel by viewModels()
     private val userViewModel: UserViewModel by activityViewModels()
     private val autoScrollViewModel: AutoScrollViewModel by activityViewModels()
