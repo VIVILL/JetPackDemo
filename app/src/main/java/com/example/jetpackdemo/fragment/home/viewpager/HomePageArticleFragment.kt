@@ -262,17 +262,12 @@ class HomePageArticleFragment: Fragment() {
         }
 
         viewLifecycleOwner.lifecycleScope.launch(exceptionHandler) {
-            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.RESUMED) {
                 userViewModel.loginUiState.collect {
-                    if (userViewModel.stateChanged){
-                        Log.d(TAG,"user username = ${it.user?.username}")
-                        // 状态改变时 自动刷新下
-                        articleAdapter.refresh()
-                        Log.d(TAG, "after articleAdapter.refresh")
-                        userViewModel.stateChanged = false
-                    }
+                    //自动刷新
+                    articleAdapter.refresh()
+                    Log.d(TAG, "after articleAdapter.refresh")
                 }
-
             }
         }
 

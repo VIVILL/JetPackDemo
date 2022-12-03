@@ -20,10 +20,7 @@ import com.example.jetpackdemo.adapter.DailyQuestionAdapter
 import com.example.jetpackdemo.adapter.FooterAdapter
 import com.example.jetpackdemo.databinding.FragmentDailyQuestionBinding
 import com.example.jetpackdemo.util.ExceptionHandler.exceptionHandler
-import com.example.jetpackdemo.viewmodel.CollectAction
-import com.example.jetpackdemo.viewmodel.DailyQuestionViewModel
-import com.example.jetpackdemo.viewmodel.UnCollectAction
-import com.example.jetpackdemo.viewmodel.WanAndroidViewModel
+import com.example.jetpackdemo.viewmodel.*
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collectLatest
@@ -43,8 +40,9 @@ class DailyQuestionFragment : Fragment() {
     private val binding get() = _binding!!
 
     private val wanAndroidViewModel: WanAndroidViewModel by activityViewModels()
+    private val userViewModel: UserViewModel by activityViewModels()
 
-    private val dailyQuestionViewModel: DailyQuestionViewModel by viewModels()
+    private val homePageArticleViewModel: HomePageArticleViewModel by viewModels()
 
 
     private val dailyQuestionAdapter by lazy{
@@ -117,7 +115,7 @@ class DailyQuestionFragment : Fragment() {
         viewLifecycleOwner.lifecycleScope.launch(exceptionHandler) {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 // 获取 PagingData
-                dailyQuestionViewModel.dailyQuestionFlow
+                homePageArticleViewModel.dailyQuestionFlow
                     .catch {
                         Log.d(TAG,"Exception : ${it.message}")
                     }
@@ -174,7 +172,15 @@ class DailyQuestionFragment : Fragment() {
                 }
             }
         }
-
+        viewLifecycleOwner.lifecycleScope.launch(exceptionHandler) {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.RESUMED) {
+                userViewModel.loginUiState.collect {
+                    // 自动刷新
+                    dailyQuestionAdapter.refresh()
+                    Log.d(TAG, "after dailyQuestionAdapter.refresh")
+                }
+            }
+        }
     }
 
     companion object {

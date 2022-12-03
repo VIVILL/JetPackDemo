@@ -41,8 +41,9 @@ class SquareFragment : Fragment() {
     private var _binding: FragmentSquareBinding? = null
     private val binding get() = _binding!!
     private val viewModel: WanAndroidViewModel by activityViewModels()
+    private val userViewModel: UserViewModel by activityViewModels()
 
-    private val squareViewModel: SquareViewModel by viewModels()
+    private val homePageArticleViewModel: HomePageArticleViewModel by viewModels()
 
     private val squareAdapter by lazy {
         SquareAdapter()
@@ -112,7 +113,7 @@ class SquareFragment : Fragment() {
         viewLifecycleOwner.lifecycleScope.launch(exceptionHandler) {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 // 获取 PagingData
-                squareViewModel.SquareDataFlow
+                homePageArticleViewModel.squareDataFlow
                     .catch {
                         Log.d(TAG,"Exception : ${it.message}")
                     }
@@ -170,6 +171,15 @@ class SquareFragment : Fragment() {
             }
         }
 
+        viewLifecycleOwner.lifecycleScope.launch(exceptionHandler) {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.RESUMED) {
+                userViewModel.loginUiState.collect {
+                    //自动刷新
+                    squareAdapter.refresh()
+                    Log.d(TAG, "after squareAdapter.refresh")
+                }
+            }
+        }
     }
 
 

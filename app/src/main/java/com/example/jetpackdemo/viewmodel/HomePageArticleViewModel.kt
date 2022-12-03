@@ -49,4 +49,10 @@ class HomePageArticleViewModel @Inject constructor(
     // 首页文章
     val homePageArticleFlow = repository.getHomePageArticle().cachedIn(viewModelScope)
 
+    // 每日一问数据
+    val dailyQuestionFlow = repository.getDailyQuestion().cachedIn(viewModelScope)
+
+    // 广场数据
+    val squareDataFlow = repository.getSquareData().cachedIn(viewModelScope)
+
 }
