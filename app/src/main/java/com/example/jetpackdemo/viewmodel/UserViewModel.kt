@@ -7,7 +7,6 @@ import androidx.lifecycle.viewModelScope
 import com.example.jetpackdemo.bean.User
 import com.example.jetpackdemo.bean.WanAndroidResponse
 import com.example.jetpackdemo.repository.WanAndroidRepository
-import com.example.jetpackdemo.util.ExceptionHandler
 import com.example.jetpackdemo.util.ExceptionHandler.exceptionHandler
 import com.example.jetpackdemo.util.SharedPreferencesHelper
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -17,7 +16,6 @@ import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
-import javax.inject.Singleton
 
 
 private const val TAG = "LoginViewModel"

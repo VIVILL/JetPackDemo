@@ -4,7 +4,6 @@ import android.util.Log
 import android.view.MotionEvent
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.jetpackdemo.repository.WanAndroidRepository
 import com.example.jetpackdemo.util.ExceptionHandler
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
