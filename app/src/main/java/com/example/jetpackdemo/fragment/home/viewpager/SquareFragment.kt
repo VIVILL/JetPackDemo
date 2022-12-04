@@ -95,6 +95,12 @@ class SquareFragment : Fragment() {
         subscribeUI()
     }
 
+    override fun onDestroyView() {
+        Log.d(TAG,"inner onDestroyView")
+        super.onDestroyView()
+        _binding = null
+    }
+
     private fun subscribeUI(){
         viewLifecycleOwner.lifecycleScope.launch(exceptionHandler) {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {

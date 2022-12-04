@@ -88,6 +88,12 @@ class HomeFragment : Fragment() {
         subscribeUI()
     }
 
+    override fun onDestroyView() {
+        Log.d(TAG,"inner onDestroyView")
+        super.onDestroyView()
+        _binding = null
+    }
+
     private var startX = 0
     private var startY = 0
 

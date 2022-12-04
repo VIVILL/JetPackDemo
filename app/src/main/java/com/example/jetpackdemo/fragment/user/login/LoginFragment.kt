@@ -12,7 +12,6 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
-import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import com.example.jetpackdemo.databinding.FragmentLoginBinding
 import com.example.jetpackdemo.util.ExceptionHandler.exceptionHandler
@@ -115,6 +114,12 @@ class LoginFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         subscribeUI()
+    }
+
+    override fun onDestroyView() {
+        Log.d(TAG,"inner onDestroyView")
+        super.onDestroyView()
+        _binding = null
     }
 
     private fun subscribeUI(){

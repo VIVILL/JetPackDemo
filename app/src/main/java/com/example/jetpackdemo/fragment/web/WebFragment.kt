@@ -1,19 +1,14 @@
 package com.example.jetpackdemo.fragment.web
 
 import android.annotation.SuppressLint
-import android.content.res.Configuration
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.webkit.WebView
-import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
-import androidx.webkit.WebSettingsCompat
-import androidx.webkit.WebViewFeature
-import com.example.jetpackdemo.R
-import com.example.jetpackdemo.databinding.FragmentProjectBinding
 import com.example.jetpackdemo.databinding.FragmentWebBinding
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -48,6 +43,12 @@ class WebFragment : Fragment() {
 
         binding.toolbar.title = arguments?.getString("title")
         configureWebView(arguments?.getString("link") ?: "")
+    }
+
+    override fun onDestroyView() {
+        Log.d(TAG,"inner onDestroyView")
+        super.onDestroyView()
+        _binding = null
     }
 
     @SuppressLint("SetJavaScriptEnabled")

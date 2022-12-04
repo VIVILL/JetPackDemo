@@ -142,6 +142,12 @@ class HomePageArticleFragment: Fragment() {
         subscribeUI()
     }
 
+    override fun onDestroyView() {
+        Log.d(TAG,"inner onDestroyView")
+        super.onDestroyView()
+        _binding = null
+    }
+
     private fun subscribeUI() {
         // banner
         viewLifecycleOwner.lifecycleScope.launch(exceptionHandler) {

@@ -14,7 +14,6 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.paging.LoadState
-import androidx.recyclerview.widget.SimpleItemAnimator
 import com.example.jetpackdemo.R
 import com.example.jetpackdemo.adapter.DailyQuestionAdapter
 import com.example.jetpackdemo.adapter.FooterAdapter
@@ -93,6 +92,12 @@ class DailyQuestionFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         subscribeUI()
+    }
+
+    override fun onDestroyView() {
+        Log.d(TAG,"inner onDestroyView")
+        super.onDestroyView()
+        _binding = null
     }
 
     private fun subscribeUI(){

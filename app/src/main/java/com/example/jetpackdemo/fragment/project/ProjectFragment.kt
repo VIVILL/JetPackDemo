@@ -77,6 +77,12 @@ class ProjectFragment : Fragment() {
         subscribeUI()
     }
 
+    override fun onDestroyView() {
+        Log.d(TAG,"inner onDestroyView")
+        super.onDestroyView()
+        _binding = null
+    }
+
     private fun subscribeUI() {
         lifecycleScope.launch(exceptionHandler) {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
