@@ -21,6 +21,9 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import kotlin.math.abs
 
+//参考链接
+// FragmentStatePagerAdapter使用不当引起的内存泄漏问题 https://blog.csdn.net/TE28093163/article/details/122992737
+// Android Navigation 遇坑记 - 真实项目经历 https://juejin.cn/post/7002798538484613127
 private const val TAG = "HomeFragment"
 @AndroidEntryPoint
 class HomeFragment : Fragment() {
@@ -62,8 +65,8 @@ class HomeFragment : Fragment() {
 
         binding.viewPager2.adapter = adapter
         // 设置 offscreenPageLimit
-        // 解决 使用 navigation 时 切换回 viewPager2 界面时内存泄漏问题
-        binding.viewPager2.offscreenPageLimit = 1
+        // 解决 使用 navigation + viewPager2 界面切换时内存泄漏问题
+        binding.viewPager2.offscreenPageLimit = fragmentStringList.size -1
         //绑定 tabLayout 和viewPager
         mLayoutMediator =  TabLayoutMediator(
             binding.tabLayout,
