@@ -159,17 +159,8 @@ class HomePageArticleFragment: Fragment() {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 homePageArticleViewModel.banner.collect{ value ->
                     Log.d(TAG," value size = ${value.size}")
-                    // 将获取的数据 进行拼接处理
-                    val list = ArrayList<Banner>()
-                    if (value.isNotEmpty()){
-                        list.add(value[value.size-1])
-                        list.addAll(value)
-                        list.add(value[0])
-                        Log.d(TAG," list size = ${list.size} list = $list")
-                    }
-                    
                     // 更新 list
-                    headerItemAdapter.bannerList = list
+                    headerItemAdapter.bannerList = value
                     Log.d(TAG," bannerList size = ${headerItemAdapter.bannerList.size}")
                     //数据改变刷新视图
                     headerAdapter.notifyItemChanged(0)

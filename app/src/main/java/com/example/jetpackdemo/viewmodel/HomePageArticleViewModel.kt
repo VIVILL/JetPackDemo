@@ -28,12 +28,21 @@ class HomePageArticleViewModel @Inject constructor(
         Log.d(TAG,"inner loadBanner")
         // 更新  value 数据
         viewModelScope.launch(exceptionHandler) {
-            _banner.value = repository.getBannerFlow()
+            val list = ArrayList<Banner>()
+            val value = repository.getBannerFlow()
                 .catch { throwable ->
                     println(throwable)
                 }
                 .stateIn(viewModelScope)
                 .value
+            // 将获取的数据 进行拼接处理
+            if (value.isNotEmpty()){
+                list.add(value[value.size-1])
+                list.addAll(value)
+                list.add(value[0])
+                Log.d(TAG," list size = ${list.size} list = $list")
+                _banner.value = list
+            }
         }
     }
 
