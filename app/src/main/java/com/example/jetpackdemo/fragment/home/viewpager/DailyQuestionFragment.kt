@@ -32,7 +32,7 @@ class DailyQuestionFragment : Fragment() {
     private var _binding: FragmentDailyQuestionBinding? = null
     private val binding get() = _binding!!
 
-    private val homePageArticleViewModel: HomePageArticleViewModel by activityViewModels()
+    private val homePageViewModel: HomePageViewModel by activityViewModels()
     private val collectViewModel: CollectViewModel by viewModels()
     private val userViewModel: UserViewModel by activityViewModels()
     private val autoScrollViewModel: AutoScrollViewModel by activityViewModels()
@@ -105,7 +105,7 @@ class DailyQuestionFragment : Fragment() {
         viewLifecycleOwner.lifecycleScope.launch(exceptionHandler) {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 // 获取 PagingData
-                homePageArticleViewModel.dailyQuestionFlow
+                homePageViewModel.dailyQuestionFlow
                     .catch {
                         Log.d(TAG,"Exception : ${it.message}")
                     }

@@ -15,12 +15,8 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.paging.LoadState
 import androidx.recyclerview.widget.ConcatAdapter
-import androidx.recyclerview.widget.SimpleItemAnimator
 import com.example.jetpackdemo.R
-import com.example.jetpackdemo.adapter.HeaderItemAdapter
-import com.example.jetpackdemo.adapter.FooterAdapter
-import com.example.jetpackdemo.adapter.HeaderAdapter
-import com.example.jetpackdemo.adapter.HomePageArticleAdapter
+import com.example.jetpackdemo.adapter.*
 import com.example.jetpackdemo.databinding.FragmentHomePageBinding
 import com.example.jetpackdemo.util.ExceptionHandler.exceptionHandler
 import com.example.jetpackdemo.viewmodel.*
@@ -34,17 +30,17 @@ import kotlinx.coroutines.launch
 
 private const val TAG = "HomePageArticleFragment"
 @AndroidEntryPoint
-class HomePageArticleFragment: Fragment() {
+class HomePageFragment: Fragment() {
     private var _binding: FragmentHomePageBinding? = null
     private val binding get() = _binding!!
 
-    private val homePageArticleViewModel: HomePageArticleViewModel by activityViewModels()
+    private val homePageViewModel: HomePageViewModel by activityViewModels()
     private val collectViewModel: CollectViewModel by viewModels()
     private val userViewModel: UserViewModel by activityViewModels()
     private val autoScrollViewModel: AutoScrollViewModel by activityViewModels()
 
     private val headerItemAdapter by lazy {
-        HeaderItemAdapter(listOf()){link, title ->
+        HomePageHeaderItemAdapter(listOf()){link, title ->
             Log.d(TAG,"link = $link title = $title")
             val navController = findNavController()
             // 跳转到 WebFragment
@@ -55,11 +51,11 @@ class HomePageArticleFragment: Fragment() {
     }
 
     private val headerAdapter by lazy {
-        HeaderAdapter(headerItemAdapter)
+        HomePageHeaderAdapter(headerItemAdapter)
     }
 
     private val articleAdapter by lazy {
-        HomePageArticleAdapter()
+        HomePageBodyAdapter()
     }
     private lateinit var concatAdapter: ConcatAdapter
 
@@ -125,7 +121,7 @@ class HomePageArticleFragment: Fragment() {
         binding.swipeLayout.setOnRefreshListener {
             Log.d(TAG,"inner setOnRefreshListener")
             // 刷新时 重新加载数据
-            homePageArticleViewModel.loadBanner()
+            homePageViewModel.loadBanner()
             // 更新 PagingDataAdapter
             articleAdapter.refresh()
         }
@@ -153,7 +149,7 @@ class HomePageArticleFragment: Fragment() {
         // banner
         viewLifecycleOwner.lifecycleScope.launch(exceptionHandler) {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                homePageArticleViewModel.banner.collect{ value ->
+                homePageViewModel.banner.collect{ value ->
                     Log.d(TAG," value size = ${value.size}")
                     // 更新 list
                     headerItemAdapter.bannerList = value
@@ -184,8 +180,8 @@ class HomePageArticleFragment: Fragment() {
 
         viewLifecycleOwner.lifecycleScope.launch(exceptionHandler){
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                // 获取 PagingData
-                homePageArticleViewModel.homePageArticleFlow
+                //监听 PagingData
+                homePageViewModel.homePageArticleFlow
                     .catch {
                         Log.d(TAG,"Exception : ${it.message}")
                     }
@@ -258,7 +254,7 @@ class HomePageArticleFragment: Fragment() {
 
     companion object {
         @JvmStatic
-        fun newInstance() = HomePageArticleFragment()
+        fun newInstance() = HomePageFragment()
     }
 
 }

@@ -11,8 +11,8 @@ import com.example.jetpackdemo.util.MyPagerHelper
 
 private const val TAG = "HeaderAdapter"
 
-class HeaderAdapter(private var adapter: HeaderItemAdapter) :
-    RecyclerView.Adapter<HeaderAdapter.ViewHolder>() {
+class HomePageHeaderAdapter(private var adapter: HomePageHeaderItemAdapter) :
+    RecyclerView.Adapter<HomePageHeaderAdapter.ViewHolder>() {
 
     class ViewHolder(private val binding: ItemParentHeaderBinding) : RecyclerView.ViewHolder(binding.root){
 
@@ -48,7 +48,7 @@ class HeaderAdapter(private var adapter: HeaderItemAdapter) :
             })
         }
 
-        fun bind(adapter: HeaderItemAdapter) {
+        fun bind(adapter: HomePageHeaderItemAdapter) {
             Log.d(TAG,"inner bind")
             binding.viewPager.setAdapter(adapter)
             binding.viewPager.createCircle(adapter.itemCount - 3)

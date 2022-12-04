@@ -10,7 +10,7 @@ import android.view.ViewConfiguration
 import android.widget.FrameLayout
 import androidx.viewpager.widget.ViewPager
 import androidx.viewpager2.widget.ViewPager2
-import com.example.jetpackdemo.adapter.HeaderItemAdapter
+import com.example.jetpackdemo.adapter.HomePageHeaderItemAdapter
 import com.example.jetpackdemo.databinding.LayoutMyViewpager2Binding
 import com.example.jetpackdemo.util.MyPagerHelper
 import kotlin.math.absoluteValue
@@ -24,7 +24,7 @@ class MyViewPager2 @JvmOverloads constructor(
     defStyle: Int = 0,
 ) : FrameLayout(context, attrs, defStyle){
     private var binding: LayoutMyViewpager2Binding
-    private lateinit var adapter: HeaderItemAdapter
+    private lateinit var adapter: HomePageHeaderItemAdapter
 
     var adapterSize: Int = 0
 
@@ -37,7 +37,7 @@ class MyViewPager2 @JvmOverloads constructor(
         this.onTouchEventListener = onTouchEventListener
     }
 
-    fun setAdapter(adapter: HeaderItemAdapter){
+    fun setAdapter(adapter: HomePageHeaderItemAdapter){
         Log.d(TAG,"inner setAdapter")
         this.adapter = adapter
         adapterSize = adapter.itemCount

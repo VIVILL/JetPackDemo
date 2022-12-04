@@ -33,7 +33,7 @@ class SquareFragment : Fragment() {
     private var _binding: FragmentSquareBinding? = null
     private val binding get() = _binding!!
 
-    private val homePageArticleViewModel: HomePageArticleViewModel by activityViewModels()
+    private val homePageViewModel: HomePageViewModel by activityViewModels()
     private val collectViewModel: CollectViewModel by viewModels()
     private val userViewModel: UserViewModel by activityViewModels()
     private val autoScrollViewModel: AutoScrollViewModel by activityViewModels()
@@ -105,8 +105,8 @@ class SquareFragment : Fragment() {
     private fun subscribeUI(){
         viewLifecycleOwner.lifecycleScope.launch(exceptionHandler) {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                // 获取 PagingData
-                homePageArticleViewModel.squareDataFlow
+                // 监听 PagingData
+                homePageViewModel.squareDataFlow
                     .catch {
                         Log.d(TAG,"Exception : ${it.message}")
                     }

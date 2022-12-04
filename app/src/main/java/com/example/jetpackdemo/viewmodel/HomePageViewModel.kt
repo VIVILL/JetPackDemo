@@ -14,7 +14,7 @@ import javax.inject.Inject
 
 private const val TAG = "HomePageArticleViewModel"
 @HiltViewModel
-class HomePageArticleViewModel @Inject constructor(
+class HomePageViewModel @Inject constructor(
     private val repository: WanAndroidRepository
 ) : ViewModel() {
     private val _banner = MutableStateFlow<List<Banner>>(listOf())
@@ -46,13 +46,13 @@ class HomePageArticleViewModel @Inject constructor(
         }
     }
 
-    // 首页文章
+    // 初始化首页文章数据
     val homePageArticleFlow = repository.getHomePageArticle().cachedIn(viewModelScope)
 
-    // 每日一问数据
+    // 初始化每日一问数据
     val dailyQuestionFlow = repository.getDailyQuestion().cachedIn(viewModelScope)
 
-    // 广场数据
+    // 初始化广场数据
     val squareDataFlow = repository.getSquareData().cachedIn(viewModelScope)
 
 }

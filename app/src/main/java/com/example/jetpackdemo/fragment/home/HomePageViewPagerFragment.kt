@@ -11,7 +11,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
-import com.example.jetpackdemo.adapter.ViewPagerAdapter
+import com.example.jetpackdemo.adapter.HomePageViewPagerAdapter
 import com.example.jetpackdemo.databinding.FragmentHomeBinding
 import com.example.jetpackdemo.util.ExceptionHandler.exceptionHandler
 import com.example.jetpackdemo.viewmodel.AutoScrollViewModel
@@ -35,7 +35,7 @@ import kotlin.math.abs
  * */
 private const val TAG = "HomeFragment"
 @AndroidEntryPoint
-class HomeFragment : Fragment() {
+class HomePageViewPagerFragment : Fragment() {
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
 
@@ -43,7 +43,7 @@ class HomeFragment : Fragment() {
 
     private var mLayoutMediator: TabLayoutMediator? = null
 
-    lateinit var adapter: ViewPagerAdapter
+    lateinit var adapter: HomePageViewPagerAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -70,7 +70,7 @@ class HomeFragment : Fragment() {
 // 解决 使用 navigation + viewPager2 + recyclerview 界面切换时内存泄漏问题 注意点：
 // 1.使用viewLifecycleOwner.lifecycle 而不是 lifecycle
 // 2. recyclerview的adapter 在onDestroyView 中置 null
-        adapter = ViewPagerAdapter(
+        adapter = HomePageViewPagerAdapter(
             fragmentStringList,
             childFragmentManager,
             //lifecycle

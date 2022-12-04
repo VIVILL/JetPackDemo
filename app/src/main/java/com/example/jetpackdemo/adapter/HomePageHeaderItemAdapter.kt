@@ -9,8 +9,8 @@ import com.example.jetpackdemo.bean.Banner
 import com.example.jetpackdemo.databinding.ItemImageBinding
 
 private const val TAG = "HeaderItemAdapter"
-class HeaderItemAdapter(var bannerList: List<Banner>, private val onClick: (link: String,title: String)  -> Unit):
-    RecyclerView.Adapter<HeaderItemAdapter.BannerViewHolder> () {
+class HomePageHeaderItemAdapter(var bannerList: List<Banner>, private val onClick: (link: String,title: String)  -> Unit):
+    RecyclerView.Adapter<HomePageHeaderItemAdapter.BannerViewHolder> () {
     class BannerViewHolder(private val binding: ItemImageBinding)
         : RecyclerView.ViewHolder(binding.root){
 

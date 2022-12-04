@@ -13,7 +13,7 @@ import com.example.jetpackdemo.bean.Article
 
 private const val TAG = "ArticleAdapter"
 
-class HomePageArticleAdapter: PagingDataAdapter<Article, HomePageArticleAdapter.ArticleViewHolder>(ARTICLE_DIFF_CALLBACK){
+class HomePageBodyAdapter: PagingDataAdapter<Article, HomePageBodyAdapter.ArticleViewHolder>(ARTICLE_DIFF_CALLBACK){
     class ArticleViewHolder (
         private val binding: ItemArticleBinding
     ) : RecyclerView.ViewHolder(binding.root){
