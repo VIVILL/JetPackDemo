@@ -95,6 +95,7 @@ class CollectionFragment : Fragment() {
     override fun onDestroyView() {
         Log.d(TAG,"inner onDestroyView")
         super.onDestroyView()
+        binding.recyclerview.adapter = null
         _binding = null
     }
 
