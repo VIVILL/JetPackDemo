@@ -24,6 +24,12 @@ import kotlin.math.abs
 //参考链接
 // FragmentStatePagerAdapter使用不当引起的内存泄漏问题 https://blog.csdn.net/TE28093163/article/details/122992737
 // Android Navigation 遇坑记 - 真实项目经历 https://juejin.cn/post/7002798538484613127
+
+/**
+ * 使用viewPager2 有2个内存泄漏点需要注意：
+ * 1. Fragment的创建要使用单例，并且不能直接往 adapter传入 fragment
+ * 2. navigation + viewPager2 + recyclerview 界面切换时 recyclerview内存泄漏 具体可参考： https://issuetracker.google.com/issues/154751401
+ * */
 private const val TAG = "HomeFragment"
 @AndroidEntryPoint
 class HomeFragment : Fragment() {
@@ -51,13 +57,14 @@ class HomeFragment : Fragment() {
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
         Log.d(TAG,"inner onCreateView")
 
+        // 不能直接传入fragment到 FragmentStateAdapter，否则会存在内存泄漏，应传入string，在 FragmentStateAdapter 中使用单例创建fragment
         val fragmentStringList = listOf<String>(
             "HomePageArticleFragment",
             "DailyQuestionFragment",
             "SquareFragment"
         )
 // https://issuetracker.google.com/issues/154751401
-// 解决 使用 navigation + viewPager2 界面切换时内存泄漏问题 注意点：
+// 解决 使用 navigation + viewPager2 + recyclerview 界面切换时内存泄漏问题 注意点：
 // 1.使用viewLifecycleOwner.lifecycle 而不是 lifecycle
 // 2. recyclerview的adapter 在onDestroyView 中置 null
         adapter = ViewPagerAdapter(
