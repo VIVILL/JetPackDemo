@@ -25,9 +25,9 @@ class ViewPagerAdapter @AssistedInject constructor(
 
     override fun createFragment(position: Int): Fragment {
         return when (fragmentStringList[position]) {
-            "HomePageArticleFragment" -> HomePageArticleFragment.newInstance("","")
-            "DailyQuestionFragment" -> DailyQuestionFragment.newInstance("","")
-            else -> SquareFragment.newInstance("","")
+            "HomePageArticleFragment" -> HomePageArticleFragment.newInstance()
+            "DailyQuestionFragment" -> DailyQuestionFragment.newInstance()
+            else -> SquareFragment.newInstance()
         }
     }
 }

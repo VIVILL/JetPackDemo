@@ -8,7 +8,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.os.bundleOf
 import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
@@ -21,8 +20,6 @@ import com.example.jetpackdemo.viewmodel.ProjectViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-
-const val ARG_PROJECT_ID = "projectId"
 
 private const val TAG = "ProjectFragment"
 
@@ -57,8 +54,6 @@ class ProjectFragment : Fragment() {
 
         // 设置 adapter
         binding.recyclerview.adapter = projectAdapter
-        // 更新 ProjectTree
-      //  viewModel.loadProjectTreeList()
 
         // 下拉刷新 更新 项目分类
         binding.swipeLayout.setOnRefreshListener {

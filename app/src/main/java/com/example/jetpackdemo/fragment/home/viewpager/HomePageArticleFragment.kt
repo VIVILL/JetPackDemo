@@ -21,7 +21,6 @@ import com.example.jetpackdemo.adapter.HeaderItemAdapter
 import com.example.jetpackdemo.adapter.FooterAdapter
 import com.example.jetpackdemo.adapter.HeaderAdapter
 import com.example.jetpackdemo.adapter.HomePageArticleAdapter
-import com.example.jetpackdemo.bean.Banner
 import com.example.jetpackdemo.databinding.FragmentHomePageBinding
 import com.example.jetpackdemo.util.ExceptionHandler.exceptionHandler
 import com.example.jetpackdemo.viewmodel.*
@@ -31,8 +30,6 @@ import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
 
 
 private const val TAG = "HomePageArticleFragment"
@@ -67,17 +64,9 @@ class HomePageArticleFragment: Fragment() {
     private lateinit var concatAdapter: ConcatAdapter
 
 
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         Log.d(TAG,"inner onCreate")
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
     }
 
     override fun onCreateView(
@@ -257,29 +246,12 @@ class HomePageArticleFragment: Fragment() {
                 }
             }
         }
-
-
     }
 
 
     companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment FirstFragment.
-         */
-        // TODO: Rename and change types and number of parameters
         @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            HomePageArticleFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
-            }
+        fun newInstance() = HomePageArticleFragment()
     }
 
 }
