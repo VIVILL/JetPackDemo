@@ -107,11 +107,6 @@ class HomePageArticleFragment: Fragment() {
             autoScrollViewModel.touchViewPager2(motionEvent)
         }
 
-        // 解决RecyclerView刷新局部Item闪烁
-        // 设置为True 不走重绘逻辑
-        binding.recyclerview.setHasFixedSize(true)
-        (binding.recyclerview.itemAnimator as SimpleItemAnimator?)!!.supportsChangeAnimations = false
-
         articleAdapter.setOnItemClickListener { link, title ->
             Log.d(TAG,"link = $link title = $title")
             val navController = findNavController()

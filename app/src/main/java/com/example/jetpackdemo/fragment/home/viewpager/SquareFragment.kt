@@ -67,9 +67,6 @@ class SquareFragment : Fragment() {
         // Inflate the layout for this fragment
         _binding = FragmentSquareBinding.inflate(inflater, container, false)
 
-        binding.recyclerview.setHasFixedSize(true)
-        (binding.recyclerview.itemAnimator as SimpleItemAnimator?)!!.supportsChangeAnimations = false
-
         squareAdapter.setOnItemClickListener { link, title ->
             Log.d(TAG,"link = $link title = $title")
             val navController = findNavController()
