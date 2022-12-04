@@ -56,16 +56,19 @@ class HomeFragment : Fragment() {
             "DailyQuestionFragment",
             "SquareFragment"
         )
-
+// https://issuetracker.google.com/issues/154751401
+// 解决 使用 navigation + viewPager2 界面切换时内存泄漏问题 注意点：
+// 1.使用viewLifecycleOwner.lifecycle 而不是 lifecycle
+// 2. recyclerview的adapter 在onDestroyView 中置 null
         adapter = ViewPagerAdapter(
             fragmentStringList,
             childFragmentManager,
-            lifecycle
+            //lifecycle
+            viewLifecycleOwner.lifecycle
         )
 
         binding.viewPager2.adapter = adapter
         // 设置 offscreenPageLimit
-        // 解决 使用 navigation + viewPager2 界面切换时内存泄漏问题
         binding.viewPager2.offscreenPageLimit = fragmentStringList.size -1
         //绑定 tabLayout 和viewPager
         mLayoutMediator =  TabLayoutMediator(
