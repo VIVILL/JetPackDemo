@@ -26,9 +26,12 @@ import kotlin.math.abs
 // Android Navigation 遇坑记 - 真实项目经历 https://juejin.cn/post/7002798538484613127
 
 /**
- * 使用viewPager2 有2个内存泄漏点需要注意：
+ * 使用 viewPager2 有几个点需要注意：
  * 1. Fragment的创建要使用单例，并且不能直接往 adapter传入 fragment
  * 2. navigation + viewPager2 + recyclerview 界面切换时 recyclerview内存泄漏 具体可参考： https://issuetracker.google.com/issues/154751401
+ * 3. LayoutMediator 要解绑，并置 null
+ * https://stackoverflow.com/questions/61779776/leak-canary-detects-memory-leaks-for-tablayout-with-viewpager2
+ * 4. _binding 和 viewPager2 的 adapter 要置 null
  * */
 private const val TAG = "HomeFragment"
 @AndroidEntryPoint
@@ -101,6 +104,11 @@ class HomeFragment : Fragment() {
     override fun onDestroyView() {
         Log.d(TAG,"inner onDestroyView")
         super.onDestroyView()
+        // https://stackoverflow.com/questions/61779776/leak-canary-detects-memory-leaks-for-tablayout-with-viewpager2
+        // TabLayout 解绑
+        mLayoutMediator?.detach()
+        mLayoutMediator = null
+        binding.viewPager2.adapter = null
         _binding = null
     }
 
@@ -154,8 +162,6 @@ class HomeFragment : Fragment() {
     override fun onDestroy() {
         super.onDestroy()
         Log.d(TAG,"inner onDestroy")
-        // TabLayout 解绑
-        mLayoutMediator?.detach()
     }
 
 }
