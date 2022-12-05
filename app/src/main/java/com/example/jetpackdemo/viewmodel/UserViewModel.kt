@@ -10,10 +10,7 @@ import com.example.jetpackdemo.repository.WanAndroidRepository
 import com.example.jetpackdemo.util.ExceptionHandler.exceptionHandler
 import com.example.jetpackdemo.util.SharedPreferencesHelper
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharedFlow
-import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -39,9 +36,10 @@ class UserViewModel @Inject constructor(
         Log.d(TAG,"inner init")
     }
 
-/*
-    var stateChanged: Boolean = false
-*/
+    var homePageLoginStateChanged: Boolean = false
+    var dailyQuestionLoginStateChanged: Boolean = false
+    var squareLoginStateChanged: Boolean = false
+
 
     lateinit var user: User
 
@@ -71,8 +69,10 @@ class UserViewModel @Inject constructor(
                     // 登录成功  初始化 user
                     user = response.data
                     Log.d(TAG,"user username = ${user.username}")
-                   /* stateChanged = true
-                    Log.d(TAG,"stateChanged = $stateChanged")*/
+                    homePageLoginStateChanged = true
+                    dailyQuestionLoginStateChanged = true
+                    squareLoginStateChanged = true
+                    Log.d(TAG,"set stateChanged = true")
                     updateLoginUiState(0,user)
                 } else if(response.errorCode == -1){
                     // "data": null,
@@ -99,9 +99,11 @@ class UserViewModel @Inject constructor(
                 val response: WanAndroidResponse<User> = repository.logout()
                 if(response.errorCode == 0) {
                     _logout.emit(LogoutUiAction.Success)
+                    homePageLoginStateChanged = true
+                    dailyQuestionLoginStateChanged = true
+                    squareLoginStateChanged = true
+                    Log.d(TAG,"set stateChanged = true")
                     // 退出后 更新登录状态
-                   /* stateChanged = true
-                    Log.d(TAG,"stateChanged = $stateChanged")*/
                     updateLoginUiState(-1,user)
                 }
             }catch (e: Exception){
@@ -156,6 +158,10 @@ class UserViewModel @Inject constructor(
         return SharedPreferencesHelper.getPassWord("password")
     }
 
+}
+
+sealed class LoginStateChanged {
+    object StateChanged : LoginStateChanged()
 }
 
 sealed class LoginUiAction {
