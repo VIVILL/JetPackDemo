@@ -1,5 +1,6 @@
 package com.example.jetpackdemo
 
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -38,6 +39,19 @@ class MainActivity : AppCompatActivity() {
         initNavigation()
     }
 
+    // https://stackoverflow.com/questions/58748117/android-leak-canary-leaking-empty-activity
+    override fun onBackPressed() {
+        if (Build.VERSION.SDK_INT == Build.VERSION_CODES.Q &&
+            isTaskRoot &&
+            (supportFragmentManager.primaryNavigationFragment?.childFragmentManager?.backStackEntryCount
+                ?: 0) == 0 &&
+            supportFragmentManager.backStackEntryCount == 0
+        ) {
+            finishAfterTransition()
+        } else {
+            super.onBackPressed()
+        }
+    }
 
     /**
      * BottomNav显示控制
