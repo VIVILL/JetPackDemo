@@ -200,7 +200,6 @@ class MyViewPager2 @JvmOverloads constructor(
     }
     // 注册
     fun register(){
-        Log.d(TAG,"after lifecycleRegistry")
         getViewPager2().registerOnPageChangeCallback(onPageChangeCallback)
     }
 
