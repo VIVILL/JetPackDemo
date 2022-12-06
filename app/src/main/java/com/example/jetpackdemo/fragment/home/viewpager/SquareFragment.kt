@@ -176,10 +176,6 @@ class SquareFragment : Fragment() {
                             Log.d(TAG, "after squareAdapter.refresh")
                             userViewModel.resetSquareState()
                         }
-                        is StateUiAction.Reset -> {
-                            Log.d(TAG,"inner Reset")
-
-                        }
                         else -> {}
                     }
                 }

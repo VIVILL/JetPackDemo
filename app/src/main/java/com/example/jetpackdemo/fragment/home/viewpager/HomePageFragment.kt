@@ -252,9 +252,6 @@ class HomePageFragment: Fragment() {
                             Log.d(TAG, "after articleAdapter.refresh")
                             userViewModel.resetHomePageState()
                         }
-                        is StateUiAction.Reset -> {
-                            Log.d(TAG,"inner Reset")
-                        }
                         else -> {}
                     }
                 }

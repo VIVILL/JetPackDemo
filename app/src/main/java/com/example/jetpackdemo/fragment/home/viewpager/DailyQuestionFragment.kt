@@ -174,9 +174,6 @@ class DailyQuestionFragment : Fragment() {
                             Log.d(TAG, "after dailyQuestionAdapter.refresh")
                             userViewModel.resetDailyQuestionState()
                         }
-                        is StateUiAction.Reset -> {
-                            Log.d(TAG,"inner Reset")
-                        }
                         else -> {}
                     }
                 }

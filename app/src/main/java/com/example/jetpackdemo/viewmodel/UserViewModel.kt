@@ -56,7 +56,6 @@ class UserViewModel @Inject constructor(
     fun resetHomePageState(){
         Log.d(TAG, "inner resetHomePageState")
         viewModelScope.launch(exceptionHandler) {
-            _homePageState.emit(StateUiAction.Reset)
             // https://developer.android.com/kotlin/flow/stateflow-and-sharedflow?hl=zh-cn
             // MutableSharedFlow 还包含一个 resetReplayCache 函数，供您在不想重放已向数据流发送的最新信息的情况下使用。
             // Adapter.refresh() 更新完数据后，清空缓存，防止 重复 replay
@@ -71,7 +70,6 @@ class UserViewModel @Inject constructor(
     fun resetDailyQuestionState(){
         Log.d(TAG, "inner resetDailyQuestionState")
         viewModelScope.launch(exceptionHandler) {
-            _dailyQuestionState.emit(StateUiAction.Reset)
             _dailyQuestionState.resetReplayCache()
         }
     }
@@ -83,7 +81,6 @@ class UserViewModel @Inject constructor(
     fun resetSquareState(){
         Log.d(TAG, "inner resetSquareState")
         viewModelScope.launch(exceptionHandler) {
-            _squareState.emit(StateUiAction.Reset)
             _squareState.resetReplayCache()
         }
     }
@@ -197,7 +194,6 @@ class UserViewModel @Inject constructor(
 
 sealed class StateUiAction{
     object StateChanged: StateUiAction()
-    object Reset: StateUiAction()
 }
 
 sealed class LoginUiAction {
