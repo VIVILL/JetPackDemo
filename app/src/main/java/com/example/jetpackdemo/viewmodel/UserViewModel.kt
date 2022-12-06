@@ -85,6 +85,14 @@ class UserViewModel @Inject constructor(
         }
     }
 
+    fun stateChanged(){
+        viewModelScope.launch(exceptionHandler) {
+            _homePageState.emit(StateUiAction.StateChanged)
+            _dailyQuestionState.emit(StateUiAction.StateChanged)
+            _squareState.emit(StateUiAction.StateChanged)
+        }
+    }
+
     // 使用 SharedFlow
     private val _loginUiAction = MutableSharedFlow<LoginUiAction>()
     val loginUiAction: SharedFlow<LoginUiAction> = _loginUiAction

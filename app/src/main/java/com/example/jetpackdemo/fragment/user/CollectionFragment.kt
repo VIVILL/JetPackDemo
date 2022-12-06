@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.os.bundleOf
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -21,6 +22,7 @@ import com.example.jetpackdemo.databinding.FragmentCollectionBinding
 import com.example.jetpackdemo.util.ExceptionHandler.exceptionHandler
 import com.example.jetpackdemo.viewmodel.CollectViewModel
 import com.example.jetpackdemo.viewmodel.UnCollectAction
+import com.example.jetpackdemo.viewmodel.UserViewModel
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.catch
@@ -34,6 +36,8 @@ class CollectionFragment : Fragment() {
     private val binding get() = _binding!!
 
     private val collectViewModel: CollectViewModel by viewModels()
+    private val userViewModel: UserViewModel by activityViewModels()
+
 
     private val collectionAdapter by lazy {
         CollectionAdapter()
@@ -72,6 +76,8 @@ class CollectionFragment : Fragment() {
             Log.d(TAG,"id = $id originId = $originId")
             collectViewModel.unCollectByCollection(id,originId)
 
+            // 取消收藏后，更新状态
+            userViewModel.stateChanged()
         }
 
         val concatAdapter = collectionAdapter.withLoadStateFooter(FooterAdapter(collectionAdapter::retry))
