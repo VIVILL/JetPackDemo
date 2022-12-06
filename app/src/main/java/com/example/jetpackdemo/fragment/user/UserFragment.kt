@@ -100,7 +100,7 @@ class UserFragment : Fragment() {
 
         viewLifecycleOwner.lifecycleScope.launch(exceptionHandler) {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.logout.collect {
+                viewModel.logoutUiAction.collect {
                     when (it) {
                         is LogoutUiAction.Success -> {
                             Snackbar.make(

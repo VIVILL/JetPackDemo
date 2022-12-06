@@ -129,9 +129,9 @@ class UserViewModel @Inject constructor(
     }
 
 
-    private val _logout = MutableSharedFlow<LogoutUiAction>()
+    private val _logoutUiAction = MutableSharedFlow<LogoutUiAction>()
 
-    val logout: SharedFlow<LogoutUiAction> = _logout
+    val logoutUiAction: SharedFlow<LogoutUiAction> = _logoutUiAction
 
     fun logout() {
         viewModelScope.launch(exceptionHandler) {
@@ -142,13 +142,13 @@ class UserViewModel @Inject constructor(
                     _dailyQuestionState.emit(StateUiAction.StateChanged)
                     _squareState.emit(StateUiAction.StateChanged)
 
-                    _logout.emit(LogoutUiAction.Success)
+                    _logoutUiAction.emit(LogoutUiAction.Success)
                     // 退出后 更新登录状态
                     updateLoginUiState(-1,user)
                 }
             }catch (e: Exception){
                 e.printStackTrace()
-                _logout.emit(LogoutUiAction.Error("退出失败"))
+                _logoutUiAction.emit(LogoutUiAction.Error("退出失败"))
             }
         }
     }
