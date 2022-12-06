@@ -8,7 +8,7 @@ import com.example.jetpackdemo.bean.Article
 
 private const val DailyQuestion_STARTING_PAGE_INDEX = 1
 
-private const val TAG = "PagingSource"
+private const val TAG = "DailyQuestionPagingSource"
 class DailyQuestionPagingSource(private val wanAndroidApi: WanAndroidApi):
     PagingSource<Int, Article>() {
 

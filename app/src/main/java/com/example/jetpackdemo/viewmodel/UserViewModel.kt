@@ -16,7 +16,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 
-private const val TAG = "LoginViewModel"
+private const val TAG = "UserViewModel"
 
 // Hilt 提供了一些预定义的限定符。例如，由于您可能需要来自应用或 activity 的 Context 类，
 // 因此 Hilt 提供了 @ApplicationContext 和 @ActivityContext 限定符。

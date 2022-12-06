@@ -33,7 +33,7 @@ import kotlin.math.abs
  * https://stackoverflow.com/questions/61779776/leak-canary-detects-memory-leaks-for-tablayout-with-viewpager2
  * 4. _binding 和 viewPager2 的 adapter 要置 null
  * */
-private const val TAG = "HomeFragment"
+private const val TAG = "HomePageViewPagerFragment"
 @AndroidEntryPoint
 class HomePageViewPagerFragment : Fragment() {
     private var _binding: FragmentHomeBinding? = null

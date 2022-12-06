@@ -12,7 +12,7 @@ import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-private const val TAG = "HomePageArticleViewModel"
+private const val TAG = "HomePageViewModel"
 @HiltViewModel
 class HomePageViewModel @Inject constructor(
     private val repository: WanAndroidRepository

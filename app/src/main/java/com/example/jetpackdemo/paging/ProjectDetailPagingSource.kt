@@ -8,7 +8,7 @@ import com.example.jetpackdemo.bean.ProjectContent
 
 private const val ProjectDetail_STARTING_PAGE_INDEX = 1
 
-private const val TAG = "PagingSource"
+private const val TAG = "ProjectDetailPagingSource"
 class ProjectDetailPagingSource(private val wanAndroidApi: WanAndroidApi,private val id: Int):
     PagingSource<Int, ProjectContent>() {
 

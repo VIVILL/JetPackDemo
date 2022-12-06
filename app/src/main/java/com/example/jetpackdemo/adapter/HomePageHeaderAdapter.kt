@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.jetpackdemo.databinding.ItemParentHeaderBinding
 import com.example.jetpackdemo.util.MyPagerHelper
 
-private const val TAG = "HeaderAdapter"
+private const val TAG = "HomePageHeaderAdapter"
 
 class HomePageHeaderAdapter(private var adapter: HomePageHeaderItemAdapter) :
     RecyclerView.Adapter<HomePageHeaderAdapter.ViewHolder>() {

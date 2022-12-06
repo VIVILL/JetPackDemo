@@ -10,7 +10,7 @@ import com.example.jetpackdemo.fragment.home.viewpager.SquareFragment
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
 
-private const val TAG = "ViewPagerAdapter"
+private const val TAG = "HomePageViewPagerAdapter"
 class HomePageViewPagerAdapter @AssistedInject constructor(
     @Assisted("fragmentStringList") private val fragmentStringList: List<String>,
     @Assisted("fm") fm: FragmentManager,

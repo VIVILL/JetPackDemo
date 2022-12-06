@@ -17,7 +17,7 @@ class SquareAdapter: PagingDataAdapter<Article, SquareAdapter.SquareViewHolder>(
     class SquareViewHolder (
         private val binding: ItemArticleBinding,
         ) : RecyclerView.ViewHolder(binding.root){
-        // 需存储一下 collect 状态，否则每次回传的数据不能保证是正确的
+        // 需存储一下 collect 状态，由于 holder 复用，如果直接回传 article中的collect 会导致回传的数据不能保证是正确的
         var collect: Boolean = false
 
         // 把数据和视图的绑定工作都放在Holder里处理

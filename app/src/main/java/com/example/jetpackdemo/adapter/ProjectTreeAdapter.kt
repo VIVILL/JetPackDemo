@@ -10,7 +10,7 @@ import com.example.jetpackdemo.bean.ProjectTree
 import com.example.jetpackdemo.databinding.ItemProjectBinding
 
 
-private const val TAG = "ProjectFragment"
+private const val TAG = "ProjectTreeAdapter"
 
 class ProjectTreeAdapter : ListAdapter<ProjectTree,ProjectTreeAdapter.ProjectViewHolder>(Project_TREE_DIFF_CALLBACK) {
     class ProjectViewHolder(private val binding: ItemProjectBinding)
