@@ -1,6 +1,7 @@
 package com.example.jetpackdemo.viewmodel
 
 import android.util.Log
+import android.widget.EditText
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
@@ -10,9 +11,11 @@ import com.example.jetpackdemo.bean.ProjectTree
 import com.example.jetpackdemo.repository.WanAndroidRepository
 import com.example.jetpackdemo.util.ExceptionHandler.exceptionHandler
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+import javax.inject.Singleton
 
 private const val TAG = "ProjectViewModel"
 
@@ -22,6 +25,15 @@ class ProjectViewModel @Inject constructor(
 ) : ViewModel(){
     private val _projectTreeListStateFlow = MutableStateFlow<List<ProjectTree>>(listOf())
     val projectTreeListStateFlow: StateFlow<List<ProjectTree>> = _projectTreeListStateFlow
+
+    companion object {
+        var projectId = 0
+    }
+
+    fun setStartProjectId(id: Int){
+        Log.d(TAG,"inner setStartProjectId")
+        projectId = id
+    }
 
     init {
         loadProjectTreeList()
@@ -38,20 +50,4 @@ class ProjectViewModel @Inject constructor(
                 .value
         }
     }
-
-    private var projectId = 0
-
-    lateinit var projectContentFlow: Flow<PagingData<ProjectContent>>
-
-    fun intiProjectContentFlow(id: Int){
-        Log.d(TAG,"inner intiProjectContentFlow projectId = $projectId id = $id")
-        projectId = id
-        loadProjectContent()
-    }
-
-    fun loadProjectContent(){
-        Log.d(TAG,"inner loadProjectContentById projectId = $projectId")
-        projectContentFlow =   repository.loadContentById(projectId).cachedIn(viewModelScope)
-    }
-
 }
