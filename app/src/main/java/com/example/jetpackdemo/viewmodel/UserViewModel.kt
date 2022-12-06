@@ -10,6 +10,7 @@ import com.example.jetpackdemo.repository.WanAndroidRepository
 import com.example.jetpackdemo.util.ExceptionHandler.exceptionHandler
 import com.example.jetpackdemo.util.SharedPreferencesHelper
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -36,11 +37,6 @@ class UserViewModel @Inject constructor(
         Log.d(TAG,"inner init")
     }
 
-    var homePageLoginStateChanged: Boolean = false
-    var dailyQuestionLoginStateChanged: Boolean = false
-    var squareLoginStateChanged: Boolean = false
-
-
     lateinit var user: User
 
     private val _loginUiState = MutableStateFlow<LoginUiState>(LoginUiState(-1,null))
@@ -53,6 +49,44 @@ class UserViewModel @Inject constructor(
         _loginUiState.value = LoginUiState(loginState,user)
     }
 
+    private val _homePageState = MutableSharedFlow<StateUiAction>(replay = 1)
+    val homePageState: SharedFlow<StateUiAction> = _homePageState
+
+    @OptIn(ExperimentalCoroutinesApi::class)
+    fun resetHomePageState(){
+        Log.d(TAG, "inner resetHomePageState")
+        viewModelScope.launch(exceptionHandler) {
+            _homePageState.emit(StateUiAction.Reset)
+            // https://developer.android.com/kotlin/flow/stateflow-and-sharedflow?hl=zh-cn
+            // MutableSharedFlow 还包含一个 resetReplayCache 函数，供您在不想重放已向数据流发送的最新信息的情况下使用。
+            // Adapter.refresh() 更新完数据后，清空缓存，防止 重复 replay
+            _homePageState.resetReplayCache()
+        }
+    }
+
+    private val _dailyQuestionState = MutableSharedFlow<StateUiAction>(replay = 1)
+    val dailyQuestionState: SharedFlow<StateUiAction> = _dailyQuestionState
+
+    @OptIn(ExperimentalCoroutinesApi::class)
+    fun resetDailyQuestionState(){
+        Log.d(TAG, "inner resetDailyQuestionState")
+        viewModelScope.launch(exceptionHandler) {
+            _dailyQuestionState.emit(StateUiAction.Reset)
+            _dailyQuestionState.resetReplayCache()
+        }
+    }
+
+    private val _squareState = MutableSharedFlow<StateUiAction>(replay = 1)
+    val squareState: SharedFlow<StateUiAction> = _squareState
+
+    @OptIn(ExperimentalCoroutinesApi::class)
+    fun resetSquareState(){
+        Log.d(TAG, "inner resetSquareState")
+        viewModelScope.launch(exceptionHandler) {
+            _squareState.emit(StateUiAction.Reset)
+            _squareState.resetReplayCache()
+        }
+    }
 
     // 使用 SharedFlow
     private val _loginUiAction = MutableSharedFlow<LoginUiAction>()
@@ -64,15 +98,16 @@ class UserViewModel @Inject constructor(
             try{
                 val response: WanAndroidResponse<User> = repository.login(userName,password)
                 if(response.errorCode == 0) {
+                    _homePageState.emit(StateUiAction.StateChanged)
+                    _dailyQuestionState.emit(StateUiAction.StateChanged)
+                    _squareState.emit(StateUiAction.StateChanged)
+
                     Log.d(TAG,"login, response.errorCode = 0")
                     _loginUiAction.emit(LoginUiAction.Success)
                     // 登录成功  初始化 user
                     user = response.data
                     Log.d(TAG,"user username = ${user.username}")
-                    homePageLoginStateChanged = true
-                    dailyQuestionLoginStateChanged = true
-                    squareLoginStateChanged = true
-                    Log.d(TAG,"set stateChanged = true")
+
                     updateLoginUiState(0,user)
                 } else if(response.errorCode == -1){
                     // "data": null,
@@ -98,11 +133,11 @@ class UserViewModel @Inject constructor(
             try{
                 val response: WanAndroidResponse<User> = repository.logout()
                 if(response.errorCode == 0) {
+                    _homePageState.emit(StateUiAction.StateChanged)
+                    _dailyQuestionState.emit(StateUiAction.StateChanged)
+                    _squareState.emit(StateUiAction.StateChanged)
+
                     _logout.emit(LogoutUiAction.Success)
-                    homePageLoginStateChanged = true
-                    dailyQuestionLoginStateChanged = true
-                    squareLoginStateChanged = true
-                    Log.d(TAG,"set stateChanged = true")
                     // 退出后 更新登录状态
                     updateLoginUiState(-1,user)
                 }
@@ -160,8 +195,9 @@ class UserViewModel @Inject constructor(
 
 }
 
-sealed class LoginStateChanged {
-    object StateChanged : LoginStateChanged()
+sealed class StateUiAction{
+    object StateChanged: StateUiAction()
+    object Reset: StateUiAction()
 }
 
 sealed class LoginUiAction {

@@ -164,12 +164,20 @@ class DailyQuestionFragment : Fragment() {
         }
         viewLifecycleOwner.lifecycleScope.launch(exceptionHandler) {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                userViewModel.loginUiState.collect {
-                    if (userViewModel.dailyQuestionLoginStateChanged){
-                        // 自动刷新
-                        dailyQuestionAdapter.refresh()
-                        Log.d(TAG, "after dailyQuestionAdapter.refresh")
-                        userViewModel.dailyQuestionLoginStateChanged = false
+                userViewModel.dailyQuestionState.collect {
+                    Log.d(TAG, "inner dailyQuestionState collect it = $it")
+                    when (it) {
+                        is StateUiAction.StateChanged-> {
+                            Log.d(TAG,"inner StateChanged")
+                            // 自动刷新
+                            dailyQuestionAdapter.refresh()
+                            Log.d(TAG, "after dailyQuestionAdapter.refresh")
+                            userViewModel.resetDailyQuestionState()
+                        }
+                        is StateUiAction.Reset -> {
+                            Log.d(TAG,"inner Reset")
+                        }
+                        else -> {}
                     }
                 }
             }

@@ -166,14 +166,22 @@ class SquareFragment : Fragment() {
 
         viewLifecycleOwner.lifecycleScope.launch(exceptionHandler) {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                userViewModel.loginUiState.collect {
-                    if (userViewModel.squareLoginStateChanged){
-                        //自动刷新
-                        squareAdapter.refresh()
-                        Log.d(TAG, "after squareAdapter.refresh")
-                        userViewModel.squareLoginStateChanged = false
-                    }
+                userViewModel.squareState.collect {
+                    Log.d(TAG, "inner squareState collect it = $it")
+                    when (it) {
+                        is StateUiAction.StateChanged -> {
+                            Log.d(TAG,"inner StateChanged")
+                            //自动刷新
+                            squareAdapter.refresh()
+                            Log.d(TAG, "after squareAdapter.refresh")
+                            userViewModel.resetSquareState()
+                        }
+                        is StateUiAction.Reset -> {
+                            Log.d(TAG,"inner Reset")
 
+                        }
+                        else -> {}
+                    }
                 }
             }
         }

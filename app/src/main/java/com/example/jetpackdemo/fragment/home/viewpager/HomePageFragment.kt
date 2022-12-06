@@ -28,7 +28,7 @@ import kotlinx.coroutines.launch
 
 
 
-private const val TAG = "HomePageArticleFragment"
+private const val TAG = "HomePageFragment"
 @AndroidEntryPoint
 class HomePageFragment: Fragment() {
     private var _binding: FragmentHomePageBinding? = null
@@ -242,14 +242,21 @@ class HomePageFragment: Fragment() {
 
         viewLifecycleOwner.lifecycleScope.launch(exceptionHandler) {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                userViewModel.loginUiState.collect {
-                    if (userViewModel.homePageLoginStateChanged){
-                        //自动刷新
-                        articleAdapter.refresh()
-                        Log.d(TAG, "after articleAdapter.refresh")
-                        userViewModel.homePageLoginStateChanged = false
+                userViewModel.homePageState.collect {
+                    Log.d(TAG, "inner homePageState collect it = $it")
+                    when(it){
+                        is StateUiAction.StateChanged -> {
+                            Log.d(TAG,"inner StateChanged")
+                            //自动刷新
+                            articleAdapter.refresh()
+                            Log.d(TAG, "after articleAdapter.refresh")
+                            userViewModel.resetHomePageState()
+                        }
+                        is StateUiAction.Reset -> {
+                            Log.d(TAG,"inner Reset")
+                        }
+                        else -> {}
                     }
-
                 }
             }
         }
