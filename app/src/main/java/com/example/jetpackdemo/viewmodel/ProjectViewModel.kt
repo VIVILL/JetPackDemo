@@ -1,21 +1,15 @@
 package com.example.jetpackdemo.viewmodel
 
 import android.util.Log
-import android.widget.EditText
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.paging.PagingData
-import androidx.paging.cachedIn
-import com.example.jetpackdemo.bean.ProjectContent
 import com.example.jetpackdemo.bean.ProjectTree
 import com.example.jetpackdemo.repository.WanAndroidRepository
 import com.example.jetpackdemo.util.ExceptionHandler.exceptionHandler
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import javax.inject.Inject
-import javax.inject.Singleton
 
 private const val TAG = "ProjectViewModel"
 

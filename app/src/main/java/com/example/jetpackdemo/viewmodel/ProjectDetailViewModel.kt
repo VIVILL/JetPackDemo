@@ -7,7 +7,6 @@ import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import com.example.jetpackdemo.bean.ProjectContent
 import com.example.jetpackdemo.repository.WanAndroidRepository
-import com.example.jetpackdemo.util.ExceptionHandler
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
